@@ -1,3 +1,24 @@
+function quicktimebase() {
+        FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
+        BASE=$(echo "$1" | sed -e "s_\(^.*/\).*_\1_")
+}
+
+function qlink() {
+	quicktimebase $1
+	echo "${BASE}${FILE}"
+}
+
+function uuget() {
+	quicktimebase $1
+        uget-gtk --quiet --http-user-agent="QuickTime/7.6.2" --category-index=1 "${BASE}${FILE}"
+}
+
+function qqget() {
+        FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
+        BASE=$(echo "$1" | sed -e "s_\(^.*/\).*_\1_")
+        wget -c -U "QuickTime/7.6.2" "${BASE}${FILE}"
+}
+
 alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
 
 t list
