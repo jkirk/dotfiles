@@ -13,6 +13,7 @@ ln -s ${CONFIGS}/.zshrc.local ${HOME}/.zshrc.local
 ln -s ${CONFIGS}/.vim ${HOME}
 ln -s ${CONFIGS}/.vimrc ${HOME}/.vimrc
 ln -s ${CONFIGS}/.vimrc.local ${HOME}/.vimrc.local
+ln -s ${CONFIGS}/.quiltrc ${HOME}/.quiltrc
 ln -s ${CONFIGS}/.gvimrc ${HOME}/.gvimrc
 ln -s ${CONFIGS}/.screenrc ${HOME}/.screenrc
 ln -s ${CONFIGS}/.todo ${HOME}
