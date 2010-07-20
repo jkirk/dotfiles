@@ -22,6 +22,7 @@ function qqget() {
         wget -c -U "QuickTime/7.6.2" "${BASE}${FILE}"
 }
 
-alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
-
-t list
+if [ -e ${HOME}/projects/scripts/todo.sh ]; then
+	alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
+	t list
+fi
