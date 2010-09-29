@@ -1,0 +1,7 @@
+[bluevoip]
+fqdn = deb.bluelink.lan
+login = jameskirk
+method = scp
+incoming = /srv/deb/bluevoip/mini-dinstall/incoming
+post_upload_command = ssh jameskirk@deb.bluelink.lan 'mini-dinstall -r -d'
+# post_upload_command = ssh jameskirk@deb.bluelink.lan 'reprepro -b /srv/deb/bluevoip list reprepro -b /srv/deb/bluevoip include etch /srv/deb/bluevoip/incoming/*.changes'

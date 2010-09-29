@@ -19,4 +19,5 @@ ln -sf ${CONFIGS}/.screenrc ${HOME}/.screenrc
 ln -sf ${CONFIGS}/.todo ${HOME}
 ln -sf ${CONFIGS}/.gitconfig ${HOME}/.gitconfig
 ln -sf ${CONFIGS}/.hgrc ${HOME}/.hgrc
+ln -sf ${CONFIGS}/.dput.cf ${HOME}/.dput.cf
 
