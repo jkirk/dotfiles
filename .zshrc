@@ -11,6 +11,13 @@
 # Global Order: zshenv, zprofile, zshrc, zlogin
 ################################################################################
 
+# USAGE
+# If you are using this file as your ~/.zshrc file, please use ~/.zshrc.pre
+# and ~/.zshrc.local for your own customisations. The former file is read
+# before ~/.zshrc, the latter is read after it. Also, consider reading the
+# refcard and the reference manual for this setup, both available from:
+#     <http://grml.org/zsh/>
+
 # Contributing:
 # If you want to help to improve grml's zsh setup, clone the grml-etc-core
 # repository from git.grml.org:
@@ -867,17 +874,9 @@ done
 
 # autoload zsh modules when they are referenced
 if is4 ; then
-    tmpargs=(
-        a   stat
-        a   zpty
-        ap  mapfile
-    )
-
-    while (( ${#tmpargs} > 0 )) ; do
-        zmodload -${tmpargs[1]} zsh/${tmpargs[2]} ${tmpargs[2]}
-        shift 2 tmpargs
-    done
-    unset tmpargs
+    zmodload -a  zsh/stat    zstat
+    zmodload -a  zsh/zpty    zpty
+    zmodload -ap zsh/mapfile mapfile
 fi
 
 if is4 && zrcautoload insert-files && zle -N insert-files ; then
@@ -906,11 +905,11 @@ if is4 && [[ -n ${(k)modules[zsh/complist]} ]] ; then
 fi
 
 # press "ctrl-e d" to insert the actual date in the form yyyy-mm-dd
-_bkdate() { BUFFER="$BUFFER$(date '+%F')"; CURSOR=$#BUFFER; }
-zle -N _bkdate
+insert-datestamp() { LBUFFER+=${(%):-'%D{%Y-%m-%d}'}; }
+zle -N insert-datestamp
 
 #k# Insert a timestamp on the command line (yyyy-mm-dd)
-bindkey '^Ed' _bkdate
+bindkey '^Ed' insert-datestamp
 
 # press esc-m for inserting last typed word again (thanks to caphuso!)
 insert-last-typed-word() { zle insert-last-word -- 0 -1 };
@@ -1142,6 +1141,12 @@ if ! is41 ; then
     done
     zstyle ':vcs_info:*' enable false
 fi
+
+if zrcautoload vcs_info; then
+    GRML_VCS_INFO=0
+else
+# I'm not reindenting the whole code below.
+GRML_VCS_INFO=1
 
 # The following code is imported from the file 'zsh/functions/vcs_info'
 # from <http://ft.bewatermyfriend.org/comp/zsh/zsh-dotfiles.tar.bz2>,
@@ -1790,7 +1795,7 @@ VCS_INFO_cdv_detect() { #{{{
 }
 # }}}
 VCS_INFO_cvs_detect() { #{{{
-    VCS_INFO_check_com svn || return 1
+    VCS_INFO_check_com cvs || return 1
     [[ -d "./CVS" ]] && [[ -r "./CVS/Repository" ]] && return 0
     return 1
 }
@@ -1971,6 +1976,8 @@ vcs_info () { # {{{
 VCS_INFO_set --nvcs preinit
 # }}}
 
+fi
+
 # Change vcs_info formats for the grml prompt. The 2nd format sets up
 # $vcs_info_msg_1_ to contain "zsh: repo-name" used to set our screen title.
 # TODO: The included vcs_info() version still uses $VCS_INFO_message_N_.
@@ -2045,6 +2052,8 @@ is4 && [[ $NOPRECMD -eq 0 ]] && precmd () {
     if [[ $TERM == screen* ]] ; then
         if [[ -n ${VCS_INFO_message_1_} ]] ; then
             ESC_print ${VCS_INFO_message_1_}
+        elif [[ -n ${vcs_info_msg_1_} ]] ; then
+            ESC_print ${vcs_info_msg_1_}
         else
             ESC_print "zsh"
         fi
@@ -2105,21 +2114,27 @@ fi
 
 # don't use colors on dumb terminals (like emacs):
 if [[ "$TERM" == dumb ]] ; then
-    PROMPT="${EXITCODE}${debian_chroot:+($debian_chroot)}%n@%m %40<...<%B%~%b%<< "'${VCS_INFO_message_0_}'"%# "
+    PROMPT="${EXITCODE}${debian_chroot:+($debian_chroot)}%n@%m %40<...<%B%~%b%<< "
 else
     # only if $GRMLPROMPT is set (e.g. via 'GRMLPROMPT=1 zsh') use the extended prompt
     # set variable identifying the chroot you work in (used in the prompt below)
     if [[ $GRMLPROMPT -gt 0 ]] ; then
         PROMPT="${RED}${EXITCODE}${CYAN}[%j running job(s)] ${GREEN}{history#%!} ${RED}%(3L.+.) ${BLUE}%* %D
-${BLUE}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "'${VCS_INFO_message_0_}'"%# "
+${BLUE}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "
     else
         # This assembles the primary prompt string
         if (( EUID != 0 )); then
-            PROMPT="${RED}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${BLUE}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "'${VCS_INFO_message_0_}'"%# "
+            PROMPT="${RED}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${BLUE}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "
         else
-            PROMPT="${BLUE}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${RED}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "'${VCS_INFO_message_0_}'"%# "
+            PROMPT="${BLUE}${EXITCODE}${WHITE}${debian_chroot:+($debian_chroot)}${RED}%n${NO_COLOUR}@%m %40<...<%B%~%b%<< "
         fi
     fi
+fi
+
+if (( GRML_VCS_INFO )); then
+    PROMPT="${PROMPT}"'${VCS_INFO_message_0_}'"%# "
+else
+    PROMPT="${PROMPT}"'${vcs_info_msg_0_}'"%# "
 fi
 
 # if we are inside a grml-chroot set a specific prompt theme
@@ -2149,7 +2164,11 @@ if check_com -c screen ; then
     elif [[ -r $HOME/.screenrc ]] ; then
         alias screen="${commands[screen]} -c $HOME/.screenrc"
     else
-        [[ -r /etc/grml/screenrc_grml ]] && alias screen="${commands[screen]} -c /etc/grml/screenrc_grml"
+        if [[ -r /etc/grml/screenrc_grml ]]; then
+            alias screen="${commands[screen]} -c /etc/grml/screenrc_grml"
+        else
+            [[ -r /etc/grml/screenrc ]] && alias screen="${commands[screen]} -c /etc/grml/screenrc"
+        fi
     fi
 fi
 
@@ -2243,6 +2262,12 @@ check_com 0 || alias 0='return 0'
 # for really lazy people like mika:
 check_com S &>/dev/null || alias S='screen'
 check_com s &>/dev/null || alias s='ssh'
+
+# especially for roadwarriors using GNU screen and ssh:
+if ! check_com asc &>/dev/null ; then
+  asc() { autossh -t "$@" 'screen -RdU' }
+  compdef asc=ssh
+fi
 
 # get top 10 shell commands:
 alias top10='print -l ? ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
@@ -2465,8 +2490,8 @@ grmlcomp() {
     # format on completion
     zstyle ':completion:*:descriptions'    format $'%{\e[0;31m%}completing %B%d%b%{\e[0m%}'
 
-    # complete 'cd -<tab>' with menu
-    zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+    # automatically complete 'cd -<tab>' and 'cd -<ctrl-d>' with menu
+    # zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
 
     # insert all expansions for expand completer
     zstyle ':completion:*:expand:*'        tag-order all-expansions
@@ -2968,7 +2993,7 @@ ipv6-tunnel() {
 
 # run dhclient for wireless device
 iwclient() {
-    salias dhclient "$(wavemon -d | awk '/device/{print $2}')"
+    sudo dhclient "$(wavemon -d | awk '/device/{print $3}')"
 }
 
 # spawn a minimally set up mksh - useful if you want to umount /usr/.
@@ -3351,7 +3376,7 @@ bk() {
 #f5# Copied diff
 cdiff() {
     emulate -L zsh
-    diff -crd "$*" | egrep -v "^Only in |^Binary files "
+    diff -crd "$@" | egrep -v "^Only in |^Binary files "
 }
 #f5# cd to directoy and list files
 cl() {
@@ -3496,17 +3521,25 @@ regcheck() {
     pcre_match $2 && echo "regex matches" || echo "regex does not match"
 }
 
+#f5# List files which have been accessed within the last {\it n} days, {\it n} defaults to 1
+accessed() {
+    emulate -L zsh
+    print -l -- *(a-${1:-1})
+}
+
 #f5# List files which have been changed within the last {\it n} days, {\it n} defaults to 1
 changed() {
     emulate -L zsh
-    print -l *(c-${1:1})
+    print -l -- *(c-${1:-1})
 }
 
 #f5# List files which have been modified within the last {\it n} days, {\it n} defaults to 1
-new() {
+modified() {
     emulate -L zsh
-    print -l *(m-${1:1})
+    print -l -- *(m-${1:-1})
 }
+# modified() was named new() in earlier versions, add an alias for backwards compatibility
+check_com new || alias new=modified
 
 #f5# Grep in history
 greph() {
@@ -3899,112 +3932,6 @@ urlencode() {
     print ${(j::)input/(#b)([^A-Za-z0-9_.!~*\'\(\)-])/%${(l:2::0:)$(([##16]#match))}}
 }
 
-#f5# Install x-lite (VoIP software)
-getxlite() {
-    emulate -L zsh
-    setopt errreturn
-    [[ -d ~/tmp ]] || mkdir ~/tmp
-    cd ~/tmp
-
-    echo "Downloading http://www.counterpath.com/download/X-Lite_Install.tar.gz and storing it in ~/tmp:"
-    if wget http://www.counterpath.com/download/X-Lite_Install.tar.gz ; then
-        unp X-Lite_Install.tar.gz && echo done || echo failed
-    else
-        echo "Error while downloading." ; return 1
-    fi
-
-    if [[ -x xten-xlite/xtensoftphone ]] ; then
-        echo "Execute xten-xlite/xtensoftphone to start xlite."
-    fi
-}
-
-#f5# Install skype
-getskype() {
-    emulate -L zsh
-    setopt errreturn
-    echo "Downloading debian package of skype."
-    echo "Notice: If you want to use a more recent skype version run 'getskypebeta'."
-    wget http://www.skype.com/go/getskype-linux-deb
-    $SUDO dpkg -i skype*.deb && echo "skype installed."
-}
-
-#f5# Install beta-version of skype
-getskypebeta() {
-    emulate -L zsh
-    setopt errreturn
-    echo "Downloading debian package of skype (beta version)."
-    wget http://www.skype.com/go/getskype-linux-beta-deb
-    $SUDO dpkg -i skype-beta*.deb && echo "skype installed."
-}
-
-#f5# Install gizmo (VoIP software)
-getgizmo() {
-    emulate -L zsh
-    setopt errreturn
-    echo "libgtk2.0-0, gconf2, libstdc++6, libasound2 and zlib1g have to be available. Installing."
-    $SUDO apt-get update
-    $SUDO apt-get install libgtk2.0-0 gconf2 libstdc++6 libasound2 zlib1g
-    wget "$(lynx --dump http://gizmo5.com/pc/download/linux/ | awk '/libstdc\+\+6.*\.deb/ {print $2}')"
-    $SUDO dpkg -i gizmo-project*.deb && echo "gizmo installed."
-}
-
-#f5# Get and run AIR (Automated Image and Restore)
-getair() {
-    emulate -L zsh
-    setopt errreturn
-    [[ -w . ]] || { echo 'Error: you do not have write permissions in this directory. Exiting.' ; return 1 }
-    local VER='1.2.8'
-    wget http://puzzle.dl.sourceforge.net/sourceforge/air-imager/air-$VER.tar.gz
-    tar zxf air-$VER.tar.gz
-    cd air-$VER
-    INTERACTIVE=no $SUDO ./install-air-1.2.8
-    [[ -x /usr/local/bin/air ]] && [[ -n "$DISPLAY" ]] && $SUDO air
-}
-
-#f5# Get specific git commitdiff
-git-get-diff() {
-    emulate -L zsh
-    if [[ -z $GITTREE ]] ; then
-        GITTREE='linux/kernel/git/torvalds/linux-2.6.git'
-    fi
-    if ! [[ -z $1 ]] ; then
-        ${=BROWSER} "http://kernel.org/git/?p=$GITTREE;a=commitdiff;h=$1"
-    else
-        echo "Usage: git-get-diff <commit>"
-    fi
-}
-
-#f5# Get specific git commit
-git-get-commit() {
-    emulate -L zsh
-    if [[ -z $GITTREE ]] ; then
-        GITTREE='linux/kernel/git/torvalds/linux-2.6.git'
-    fi
-    if ! [[ -z $1 ]] ; then
-        ${=BROWSER} "http://kernel.org/git/?p=$GITTREE;a=commit;h=$1"
-    else
-        echo "Usage: git-get-commit <commit>"
-    fi
-}
-
-#f5# Get specific git diff
-git-get-plaindiff () {
-    emulate -L zsh
-    if [[ -z $GITTREE ]] ; then
-       GITTREE='linux/kernel/git/torvalds/linux-2.6.git'
-    fi
-    if [[ -z $1 ]] ; then
-       echo 'Usage: git-get-plaindiff '
-    else
-       echo -n "Downloading $1.diff ... "
-       # avoid "generating ..." stuff from kernel.org server:
-       wget --quiet "http://kernel.org/git/?p=$GITTREE;a=commitdiff_plain;h=$1" -O /dev/null
-       wget --quiet "http://kernel.org/git/?p=$GITTREE;a=commitdiff_plain;h=$1" -O $1.diff \
-            && echo done || echo failed
-    fi
-}
-
-
 # http://strcat.de/blog/index.php?/archives/335-Software-sauber-deinstallieren...html
 #f5# Log 'make install' output
 mmake() {
@@ -4147,41 +4074,46 @@ if check_com -c highlight ; then
     compdef _hl_complete hl
 fi
 
+# TODO:
+# Rewrite this by either using tinyurl.com's API
+# or using another shortening service to comply with
+# tinyurl.com's policy.
+#
 # Create small urls via http://tinyurl.com using wget(1).
-function zurl() {
-    emulate -L zsh
-    [[ -z $1 ]] && { print "USAGE: zurl <URL>" ; return 1 }
-
-    local PN url tiny grabber search result preview
-    PN=$0
-    url=$1
-#   Check existence of given URL with the help of ping(1).
-#   N.B. ping(1) only works without an eventual given protocol.
-    ping -c 1 ${${url#(ftp|http)://}%%/*} >& /dev/null || \
-        read -q "?Given host ${${url#http://*/}%/*} is not reachable by pinging. Proceed anyway? [y|n] "
-
-    if (( $? == 0 )) ; then
-#           Prepend 'http://' to given URL where necessary for later output.
-            [[ ${url} != http(s|)://* ]] && url='http://'${url}
-            tiny='http://tinyurl.com/create.php?url='
-            if check_com -c wget ; then
-                grabber='wget -O- -o/dev/null'
-            else
-                print "wget is not available, but mandatory for ${PN}. Aborting."
-            fi
-#           Looking for i.e.`copy('http://tinyurl.com/7efkze')' in TinyURL's HTML code.
-            search='copy\(?http://tinyurl.com/[[:alnum:]]##*'
-            result=${(M)${${${(f)"$(${=grabber} ${tiny}${url})"}[(fr)${search}*]}//[()\';]/}%%http:*}
-#           TinyURL provides the rather new feature preview for more confidence. <http://tinyurl.com/preview.php>
-            preview='http://preview.'${result#http://}
-
-            printf '%s\n\n' "${PN} - Shrinking long URLs via webservice TinyURL <http://tinyurl.com>."
-            printf '%s\t%s\n\n' 'Given URL:' ${url}
-            printf '%s\t%s\n\t\t%s\n' 'TinyURL:' ${result} ${preview}
-    else
-        return 1
-    fi
-}
+#function zurl() {
+#    emulate -L zsh
+#    [[ -z $1 ]] && { print "USAGE: zurl <URL>" ; return 1 }
+#
+#    local PN url tiny grabber search result preview
+#    PN=$0
+#    url=$1
+##   Check existence of given URL with the help of ping(1).
+##   N.B. ping(1) only works without an eventual given protocol.
+#    ping -c 1 ${${url#(ftp|http)://}%%/*} >& /dev/null || \
+#        read -q "?Given host ${${url#http://*/}%/*} is not reachable by pinging. Proceed anyway? [y|n] "
+#
+#    if (( $? == 0 )) ; then
+##           Prepend 'http://' to given URL where necessary for later output.
+#            [[ ${url} != http(s|)://* ]] && url='http://'${url}
+#            tiny='http://tinyurl.com/create.php?url='
+#            if check_com -c wget ; then
+#                grabber='wget -O- -o/dev/null'
+#            else
+#                print "wget is not available, but mandatory for ${PN}. Aborting."
+#            fi
+##           Looking for i.e.`copy('http://tinyurl.com/7efkze')' in TinyURL's HTML code.
+#            search='copy\(?http://tinyurl.com/[[:alnum:]]##*'
+#            result=${(M)${${${(f)"$(${=grabber} ${tiny}${url})"}[(fr)${search}*]}//[()\';]/}%%http:*}
+##           TinyURL provides the rather new feature preview for more confidence. <http://tinyurl.com/preview.php>
+#            preview='http://preview.'${result#http://}
+#
+#            printf '%s\n\n' "${PN} - Shrinking long URLs via webservice TinyURL <http://tinyurl.com>."
+#            printf '%s\t%s\n\n' 'Given URL:' ${url}
+#            printf '%s\t%s\n\t\t%s\n' 'TinyURL:' ${result} ${preview}
+#    else
+#        return 1
+#    fi
+#}
 
 #f2# Print a specific line of file(s).
 linenr () {
@@ -4214,7 +4146,7 @@ whatwhen()  {
     emulate -L zsh
     local usage help ident format_l format_s first_char remain first last
     usage='USAGE: whatwhen [options] <searchstring> <search range>'
-    help='Use' \`'whatwhen -h'\'' for further explanations.'
+    help='Use `whatwhen -h'\'' for further explanations.'
     ident=${(l,${#${:-Usage: }},, ,)}
     format_l="${ident}%s\t\t\t%s\n"
     format_s="${format_l//(\\t)##/\\t}"
@@ -4289,34 +4221,39 @@ weather() {
         return 1
     }
 
-    local PLACE="${1:u}"
-    local FILE="$HOME/.weather/$PLACE"
-    local LOG="$HOME/.weather/log"
+    local VERBOSE="yes"    # TODO: Make this a command line switch
 
-    [[ -d $HOME/.weather ]] || {
-        print -n "Creating $HOME/.weather: "
-        mkdir $HOME/.weather
+    local ODIR=`pwd`
+    local PLACE="${1:u}"
+    local DIR="${HOME}/.weather"
+    local LOG="${DIR}/log"
+
+    [[ -d ${DIR} ]] || {
+        print -n "Creating ${DIR}: "
+        mkdir ${DIR}
         print 'done'
     }
 
     print "Retrieving information for ${PLACE}:"
     print
-    wget -T 10 --no-verbose --output-file=$LOG --output-document=$FILE --timestamping http://weather.noaa.gov/pub/data/observations/metar/decoded/$PLACE.TXT
+    cd ${DIR} && wget -T 10 --no-verbose --output-file=$LOG --timestamping http://weather.noaa.gov/pub/data/observations/metar/decoded/$PLACE.TXT
 
     if [[ $? -eq 0 ]] ; then
         if [[ -n "$VERBOSE" ]] ; then
-            cat $FILE
+            cat ${PLACE}.TXT
         else
-            DATE=$(grep 'UTC' $FILE | sed 's#.* /##')
-            TEMPERATURE=$(awk '/Temperature/ { print $4" degree Celcius / " $2" degree Fahrenheit" }' $FILE| tr -d '(')
+            DATE=$(grep 'UTC' ${PLACE}.TXT | sed 's#.* /##')
+            TEMPERATURE=$(awk '/Temperature/ { print $4" degree Celcius / " $2" degree Fahrenheit" }' ${PLACE}.TXT | tr -d '(')
             echo "date: $DATE"
             echo "temp:  $TEMPERATURE"
         fi
     else
         print "There was an error retrieving the weather information for $PLACE" >&2
         cat $LOG
+        cd $ODIR
         return 1
     fi
+    cd $ODIR
 }
 # }}}
 
@@ -4346,57 +4283,8 @@ if check_com -c hg ; then
         [[ -n "$1" ]] && hg diff -r $1 -r tip | diffstat || hg export tip | diffstat
     }
 
-    #f5# Get current mercurial tip via hg itself
-    gethgclone() {
-        emulate -L zsh
-        setopt errreturn
-        if [[ -f mercurial-tree/.hg ]] ; then
-            cd mercurial-tree
-            echo "Running hg pull for retreiving latest version..."
-            hg pull
-            echo "Finished update. Building mercurial"
-            make local
-            echo "Setting \$PATH to $PWD:\$PATH..."
-            export PATH="$PWD:$PATH"
-        else
-            echo "Downloading mercurial via hg"
-            hg clone http://selenic.com/repo/hg mercurial-tree
-            cd mercurial-tree
-            echo "Building mercurial"
-            make local
-            echo "Setting \$PATH to $PWD:\$PATH..."
-            export PATH="$PWD:$PATH"
-            echo "make sure you set it permanent via ~/.zshrc if you plan to use it permanently."
-            # echo "Setting \$PYTHONPATH to PYTHONPATH=\${HOME}/lib/python,"
-            # export PYTHONPATH=${HOME}/lib/python
-        fi
-    }
-
 fi # end of check whether we have the 'hg'-executable
 
-# get current mercurial snapshot
-#f5# Get current mercurial snapshot
-gethgsnap() {
-    emulate -L zsh
-    setopt errreturn
-    if [[ -f mercurial-snapshot.tar.gz ]] ; then
-         echo "mercurial-snapshot.tar.gz exists already, skipping download."
-    else
-        echo "Downloading mercurial snapshot"
-        wget http://www.selenic.com/mercurial/mercurial-snapshot.tar.gz
-    fi
-    echo "Unpacking mercurial-snapshot.tar.gz"
-    tar zxf mercurial-snapshot.tar.gz
-    cd mercurial-snapshot/
-    echo "Installing required build-dependencies"
-    $SUDO apt-get update
-    $SUDO apt-get install python2.4-dev
-    echo "Building mercurial"
-    make local
-    echo "Setting \$PATH to $PWD:\$PATH..."
-    export PATH="$PWD:$PATH"
-    echo "make sure you set it permanent via ~/.zshrc if you plan to use it permanently."
-}
 # }}}
 
 # some useful commands often hard to remember - let's grep for them {{{
