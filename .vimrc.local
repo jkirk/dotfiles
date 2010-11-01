@@ -13,4 +13,8 @@ let g:Tex_DefaultTargetFormat='pdf'
 "# changelog settings ####################
 let g:changelog_username = "Darshaka Pathirana  <dpat@syn-net.org>"
 
+"# bash-support settings #################
+let g:BASH_AuthorName   = 'Darshaka Pathirana'
+let g:BASH_Email        = 'dpat@syn-net.org'
+
 " set writebackup          " Keep a backup file
