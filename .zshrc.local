@@ -27,6 +27,9 @@ function qqget() {
 
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
 	alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
+	alias tmm="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
+	alias tmu="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +music"
+	alias tmo="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +movies"
 fi
 
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
