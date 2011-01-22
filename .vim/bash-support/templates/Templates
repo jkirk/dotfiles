@@ -13,7 +13,12 @@
 § ========== FILE INCLUDES ====================================
 § =============================================================
 §
+== IF |STYLE| IS generic ==
 |includefile| = bash.comments.template
+== ENDIF ==
+== IF |STYLE| IS default ==
+|includefile| = bash-file-header
+== ENDIF ==
 |includefile| = bash.statements.template
 |includefile| = bash.paramsub.template
 §
