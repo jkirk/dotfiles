@@ -29,7 +29,7 @@
 "                  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 "                  PURPOSE.
 "                  See the GNU General Public License version 2 for more details.
-"       Revision:  $Id: bash-support.vim,v 1.74 2010/08/08 11:20:24 mehner Exp $
+"       Revision:  $Id: bash-support.vim,v 1.81 2010/12/05 11:10:47 mehner Exp $
 "
 "------------------------------------------------------------------------------
 "
@@ -38,7 +38,7 @@
 if exists("g:BASH_Version") || &cp
  finish
 endif
-let g:BASH_Version= "3.2"  						" version number of this script; do not change
+let g:BASH_Version= "3.4"  						" version number of this script; do not change
 "
 if v:version < 700
   echohl WarningMsg | echo 'plugin bash-support.vim needs Vim version >= 7'| echohl None
@@ -46,72 +46,66 @@ endif
 "
 "#################################################################################
 "
-"  Global variables (with default values) which can be overridden.
+" Platform specific items:
 "
-"  Key word completion is enabled by the filetype plugin 'sh.vim'
-"  g:BASH_Dictionary_File  must be global
-"
-"------------------------------------------------------------------------------
-"  Look for global variables (if any)    {{{1
-"------------------------------------------------------------------------------
-function! BASH_CheckGlobal ( name )
-  if exists('g:'.a:name)
-    exe 'let s:'.a:name.'  = g:'.a:name
-  endif
-endfunction   " ---------- end of function  BASH_CheckGlobal  ----------
-"
-"------------------------------------------------------------------------------
-"  Define a global variable and assign a default value if not already defined.
-"------------------------------------------------------------------------------
-function! BASH_SetGlobalVariable ( name, default )
-  if !exists('g:'.a:name)
-    exe 'let g:'.a:name."  = '".a:default."'"
-  endif
-endfunction   " ---------- end of function  BASH_SetGlobalVariable  ----------
-
-" ==========  Linux/Unix  ======================================================
 "
 let	s:MSWIN =		has("win16") || has("win32") || has("win64") || has("win95")
 "
+let s:installation				= 'local'
+let s:vimfiles						= $VIM
+let	s:sourced_script_file	= expand("<sfile>")
+let s:BASH_GlobalTemplateFile= ''
+let s:BASH_GlobalTemplateDir = ''
+"
 if	s:MSWIN
-	let s:escfilename       = ''
-  let s:plugin_dir  		  = $VIM.'\vimfiles\'
-	let s:BASH_root_dir			= $VIM.'\vimfiles'
-	let s:BASH_CodeSnippets	= s:plugin_dir.'bash-support/codesnippets/'
-	let s:BASH_OutputGvim   = 'xterm'
-	let s:BASH_BASH					= 'win-bash.exe'
-	let s:BASH_Man          = 'man.exe'
-	let s:installation			= 'system'
-else
+  " ==========  MS Windows  ======================================================
 	"
-	" user / system wide installation
-	"
-	let s:installation	= 'local'
-	if match( expand("<sfile>"), $VIM ) == 0
+	if match( s:sourced_script_file, escape( s:vimfiles, ' \' ) ) == 0
 		" system wide installation
-		let s:plugin_dir  = $VIM.'/vimfiles/'
-		let s:installation	= 'system'
+		let s:installation							= 'system'
+		let s:plugin_dir								= $VIM.'/vimfiles/'
+		let s:BASH_GlobalTemplateFile   = s:plugin_dir.'bash-support/templates/Templates'
+		let s:BASH_GlobalTemplateDir    = fnamemodify( s:BASH_GlobalTemplateFile, ":p:h" ).'/'
 	else
 		" user installation assumed
-		let s:plugin_dir  = $HOME.'/.vim/'
-	end
-
-	" user defined bash-support directories
-  if exists("g:BASH_Support_Root_Dir")
-		let s:plugin_dir  	= g:BASH_Support_Root_Dir.'/'
-		let s:BASH_root_dir	= g:BASH_Support_Root_Dir
-  else
-		let s:BASH_root_dir	= $HOME.'/.vim'
-  endif
+		let s:plugin_dir  							= $HOME.'/vimfiles/'
+	endif
 	"
-	let s:escfilename       = ' \%#[]'
-	let s:BASH_CodeSnippets = s:plugin_dir.'bash-support/codesnippets/'
-	let s:BASH_OutputGvim   = 'vim'
-	let s:BASH_BASH					= $SHELL
-	let s:BASH_Man          = 'man'
+	let s:BASH_LocalTemplateFile      = $HOME.'/vimfiles/bash-support/templates/Templates'
+	let s:BASH_LocalTemplateDir       = fnamemodify( s:BASH_LocalTemplateFile, ":p:h" ).'/'
+	let s:BASH_CodeSnippets 					= $HOME.'/vimfiles/bash-support/codesnippets/'
+	let s:BASH_BASH										= 'bash.exe'
+	let s:BASH_Man        						= 'man.exe'
+	let s:BASH_OutputGvim							= 'xterm'
+	let s:escfilename     						= ''
+else
+  " ==========  Linux/Unix  ======================================================
+	"
+	if match( expand("<sfile>"), $VIM ) == 0
+		" system wide installation
+		let s:installation	= 'system'
+		let s:plugin_dir  	= $VIM.'/vimfiles/'
+		let s:BASH_GlobalTemplateFile	= s:plugin_dir.'bash-support/templates/Templates'
+		let s:BASH_GlobalTemplateDir	= fnamemodify( s:BASH_GlobalTemplateFile, ":p:h" ).'/'
+	else
+		" user installation assumed
+		let s:plugin_dir  	= $HOME.'/.vim/'
+	end
+	"
+	let s:BASH_LocalTemplateFile		= $HOME.'/.vim/bash-support/templates/Templates'
+	let s:BASH_LocalTemplateDir			= fnamemodify( s:BASH_LocalTemplateFile, ":p:h" ).'/'
+	let s:BASH_CodeSnippets  				= $HOME.'/.vim/bash-support/codesnippets/'
+	let s:BASH_BASH				= $SHELL
+	let s:BASH_Man        = 'man'
+	let s:BASH_OutputGvim	= 'vim'
+	let s:escfilename     = ' \%#[]'
+  " ==============================================================================
 endif
 "
+"
 "------------------------------------------------------------------------------
+"
+"  g:BASH_Dictionary_File  must be global
 "
 if !exists("g:BASH_Dictionary_File")
 	let g:BASH_Dictionary_File     = s:plugin_dir.'bash-support/wordlists/bash.list'
@@ -119,16 +113,12 @@ endif
 "
 "  Modul global variables    {{{1
 "
+let s:BASH_MenuHeader							 = 'yes'
+let s:BASH_Root										 = 'B&ash.'
 let s:BASH_Debugger                = 'term'
 let s:BASH_LineEndCommColDefault   = 49
 let s:BASH_LoadMenus               = 'yes'
-let s:BASH_GlobalTemplateFile      = s:plugin_dir.'bash-support/templates/Templates'
-let s:BASH_GlobalTemplateDir       = fnamemodify( s:BASH_GlobalTemplateFile, ":p:h" ).'/'
-let s:BASH_LocalTemplateFile       = s:BASH_root_dir.'/bash-support/templates/Templates'
-let s:BASH_LocalTemplateDir        = fnamemodify( s:BASH_LocalTemplateFile, ":p:h" ).'/'
 let s:BASH_TemplateOverwrittenMsg= 'yes'
-let s:BASH_MenuHeader              = 'yes'
-let s:BASH_Root                    = 'B&ash.'         " the name of the root menu of this plugin
 let s:BASH_SyntaxCheckOptionsGlob  = ''
 "
 let s:BASH_XtermDefaults           = '-fa courier -fs 12 -geometry 80x24'
@@ -146,6 +136,7 @@ let s:BASH_Ctrl_j								= 'on'
 let s:BASH_TJT									= '[ 0-9a-zA-Z_]*'
 let s:BASH_TemplateJumpTarget1  = '<+'.s:BASH_TJT.'+>\|{+'.s:BASH_TJT.'+}'
 let s:BASH_TemplateJumpTarget2  = '<-'.s:BASH_TJT.'->\|{-'.s:BASH_TJT.'-}'
+let s:BASH_FileFormat						= 'unix'
 "
 "------------------------------------------------------------------------------
 "  Some variables for internal use only
@@ -155,11 +146,21 @@ let s:BASH_SetCounter     = 0                     "
 let s:BASH_Set_Txt        = "SetOptionNumber_"
 let s:BASH_Shopt_Txt      = "ShoptOptionNumber_"
 "
+"------------------------------------------------------------------------------
+"  Look for global variables (if any)    {{{1
+"------------------------------------------------------------------------------
+function! BASH_CheckGlobal ( name )
+  if exists('g:'.a:name)
+    exe 'let s:'.a:name.'  = g:'.a:name
+  endif
+endfunction   " ---------- end of function  BASH_CheckGlobal  ----------
+"
 call BASH_CheckGlobal('BASH_BASH                  ')
 call BASH_CheckGlobal('BASH_Errorformat           ')
 call BASH_CheckGlobal('BASH_CodeSnippets          ')
 call BASH_CheckGlobal('BASH_Ctrl_j                ')
 call BASH_CheckGlobal('BASH_Debugger              ')
+call BASH_CheckGlobal('BASH_FileFormat            ')
 call BASH_CheckGlobal('BASH_FormatDate            ')
 call BASH_CheckGlobal('BASH_FormatTime            ')
 call BASH_CheckGlobal('BASH_FormatYear            ')
@@ -171,7 +172,6 @@ call BASH_CheckGlobal('BASH_Man                   ')
 call BASH_CheckGlobal('BASH_MenuHeader            ')
 call BASH_CheckGlobal('BASH_OutputGvim            ')
 call BASH_CheckGlobal('BASH_Printheader           ')
-call BASH_CheckGlobal('BASH_Root                  ')
 call BASH_CheckGlobal('BASH_SyntaxCheckOptionsGlob')
 call BASH_CheckGlobal('BASH_TemplateOverwrittenMsg')
 call BASH_CheckGlobal('BASH_XtermDefaults         ')
@@ -348,7 +348,7 @@ function!	BASH_InitMenu ()
 	"-------------------------------------------------------------------------------
 
 	exe "anoremenu ".s:BASH_Root.'&Statements.&case<Tab>\\sc	     				:call BASH_InsertTemplate("statements.case")<CR>'
-	exe "anoremenu ".s:BASH_Root.'&Statements.e&lif<Tab>\\sl							:call BASH_InsertTemplate("statements.elif")<CR>'
+	exe "anoremenu ".s:BASH_Root.'&Statements.e&lif<Tab>\\sei							:call BASH_InsertTemplate("statements.elif")<CR>'
 	exe "anoremenu ".s:BASH_Root.'&Statements.&for\ in<Tab>\\sf						:call BASH_InsertTemplate("statements.for-in")<CR>'
 	exe "anoremenu ".s:BASH_Root.'&Statements.&for\ ((\.\.\.))<Tab>\\sfo	:call BASH_InsertTemplate("statements.for")<CR>'
 	exe "anoremenu ".s:BASH_Root.'&Statements.&if<Tab>\\si								:call BASH_InsertTemplate("statements.if")<CR>'
@@ -358,7 +358,7 @@ function!	BASH_InitMenu ()
 	exe "anoremenu ".s:BASH_Root.'&Statements.&while<Tab>\\sw							:call BASH_InsertTemplate("statements.while")<CR>'
 
 	exe "inoremenu ".s:BASH_Root.'&Statements.&case<Tab>\\sc	     				<Esc>:call BASH_InsertTemplate("statements.case")<CR>'
-	exe "inoremenu ".s:BASH_Root.'&Statements.e&lif<Tab>\\sl							<Esc>:call BASH_InsertTemplate("statements.elif")<CR>'
+	exe "inoremenu ".s:BASH_Root.'&Statements.e&lif<Tab>\\sei							<Esc>:call BASH_InsertTemplate("statements.elif")<CR>'
 	exe "inoremenu ".s:BASH_Root.'&Statements.&for\ in<Tab>\\sf						<Esc>:call BASH_InsertTemplate("statements.for-in")<CR>'
 	exe "inoremenu ".s:BASH_Root.'&Statements.&for\ ((\.\.\.))<Tab>\\sfo	<Esc>:call BASH_InsertTemplate("statements.for")<CR>'
 	exe "inoremenu ".s:BASH_Root.'&Statements.&if<Tab>\\si								<Esc>:call BASH_InsertTemplate("statements.if")<CR>'
@@ -418,25 +418,25 @@ function!	BASH_InitMenu ()
 	exe "vnoremenu ".s:BASH_Root.'&Statements.ech&o\ \ -e\ ""<Tab>\\se 	<Esc>:call BASH_InsertTemplate("statements.echo", "v")<CR>'
 	"
 	exe "amenu  ".s:BASH_Root.'&Statements.-SEP5-                                 :'
-	exe "anoremenu ".s:BASH_Root.'&Statements.&array\ elem\.\ \\sa<Tab>${\.[\.]}      	a${[]}<Left><Left><Left>'
-	exe "inoremenu ".s:BASH_Root.'&Statements.&array\ elem\.\ \\sa<Tab>${\.[\.]}      	 ${[]}<Left><Left><Left>'
-	exe "vnoremenu ".s:BASH_Root.'&Statements.&array\ elem\.\ \\sa<Tab>${\.[\.]}      	s${[]}<Left><Left><Esc>P'
-
-	exe "anoremenu ".s:BASH_Root.'&Statements.&array\ elem\.s\ \\sas<Tab>${\.[@]}      	a${[@]}<Left><Left><Left><Left>'
-	exe "inoremenu ".s:BASH_Root.'&Statements.&array\ elem\.s\ \\sas<Tab>${\.[@]}      	 ${[@]}<Left><Left><Left><Left>'
-	exe "vnoremenu ".s:BASH_Root.'&Statements.&array\ elem\.s\ \\sas<Tab>${\.[@]}      	s${[@]}<Left><Left><Left><Esc>P'
-
-	exe "anoremenu ".s:BASH_Root.'&Statements.arra&y\ (1\ word)<Tab>${\.[*]}			a${[*]}<Left><Left><Left><Left>'
-	exe "inoremenu ".s:BASH_Root.'&Statements.arra&y\ (1\ word)<Tab>${\.[*]}			 ${[*]}<Left><Left><Left><Left>'
-	exe "vnoremenu ".s:BASH_Root.'&Statements.arra&y\ (1\ word)<Tab>${\.[*]}			s${[*]}<Left><Left><Left><Esc>P'
-
-	exe "anoremenu ".s:BASH_Root.'&Statements.no\.\ of\ ele&m\.s<Tab>${#\.[@]}		a${#[@]}<Left><Left><Left><Left>'
-	exe "inoremenu ".s:BASH_Root.'&Statements.no\.\ of\ ele&m\.s<Tab>${#\.[@]}		 ${#[@]}<Left><Left><Left><Left>'
-	exe "vnoremenu ".s:BASH_Root.'&Statements.no\.\ of\ ele&m\.s<Tab>${#\.[@]}		s${#[@]}<Left><Left><Left><Esc>P'
-
-	exe "anoremenu ".s:BASH_Root.'&Statements.list\ of\ in&dices<tab>${!\.[*]}   	a${![*]}<Left><Left><Left><Left>'
-	exe "inoremenu ".s:BASH_Root.'&Statements.list\ of\ in&dices<tab>${!\.[*]}   	 ${![*]}<Left><Left><Left><Left>'
-	exe "vnoremenu ".s:BASH_Root.'&Statements.list\ of\ in&dices<tab>${!\.[*]}   	s${![*]}<Left><Left><Left><Esc>P'
+	exe "anoremenu ".s:BASH_Root.'&Statements.&array\ elem\.\ \ \ ${\.[\.]}<tab>\\sa\       a${[]}<Left><Left><Left>'
+	exe "inoremenu ".s:BASH_Root.'&Statements.&array\ elem\.\ \ \ ${\.[\.]}<tab>\\sa\        ${[]}<Left><Left><Left>'
+	exe "vnoremenu ".s:BASH_Root.'&Statements.&array\ elem\.\ \ \ ${\.[\.]}<tab>\\sa\       s${[]}<Left><Left><Esc>P'
+                                                                                   
+	exe "anoremenu ".s:BASH_Root.'&Statements.&arr\.\ elem\.s\ (all)\ \ \ ${\.[@]}<tab>\\saa     	a${[@]}<Left><Left><Left><Left>'
+	exe "inoremenu ".s:BASH_Root.'&Statements.&arr\.\ elem\.s\ (all)\ \ \ ${\.[@]}<tab>\\saa     	 ${[@]}<Left><Left><Left><Left>'
+	exe "vnoremenu ".s:BASH_Root.'&Statements.&arr\.\ elem\.s\ (all)\ \ \ ${\.[@]}<tab>\\saa     	s${[@]}<Left><Left><Left><Esc>P'
+                                                                                   
+	exe "anoremenu ".s:BASH_Root.'&Statements.arr\.\ elem\.s\ (&1\ word)\ \ \ ${\.[*]}<tab>\\sa1 		a${[*]}<Left><Left><Left><Left>'
+	exe "inoremenu ".s:BASH_Root.'&Statements.arr\.\ elem\.s\ (&1\ word)\ \ \ ${\.[*]}<tab>\\sa1 		 ${[*]}<Left><Left><Left><Left>'
+	exe "vnoremenu ".s:BASH_Root.'&Statements.arr\.\ elem\.s\ (&1\ word)\ \ \ ${\.[*]}<tab>\\sa1 		s${[*]}<Left><Left><Left><Esc>P'
+                                                                                   
+	exe "anoremenu ".s:BASH_Root.'&Statements.no\.\ of\ ele&m\.s\ \ \ ${#\.[@]}<tab>\\san		a${#[@]}<Left><Left><Left><Left>'
+	exe "inoremenu ".s:BASH_Root.'&Statements.no\.\ of\ ele&m\.s\ \ \ ${#\.[@]}<tab>\\san		 ${#[@]}<Left><Left><Left><Left>'
+	exe "vnoremenu ".s:BASH_Root.'&Statements.no\.\ of\ ele&m\.s\ \ \ ${#\.[@]}<tab>\\san		s${#[@]}<Left><Left><Left><Esc>P'
+                                                                                   
+	exe "anoremenu ".s:BASH_Root.'&Statements.list\ of\ in&dices\ \ \ ${!\.[*]}<tab>\\sai   a${![*]}<Left><Left><Left><Left>'
+	exe "inoremenu ".s:BASH_Root.'&Statements.list\ of\ in&dices\ \ \ ${!\.[*]}<tab>\\sai    ${![*]}<Left><Left><Left><Left>'
+	exe "vnoremenu ".s:BASH_Root.'&Statements.list\ of\ in&dices\ \ \ ${!\.[*]}<tab>\\sai   s${![*]}<Left><Left><Left><Esc>P'
 	"
 	if s:BASH_CodeSnippets != ""
 		exe " menu  <silent> ".s:BASH_Root.'S&nippets.read\ code\ snippet<Tab>\\nr        :call BASH_CodeSnippets("r")<CR>'
@@ -451,10 +451,12 @@ function!	BASH_InitMenu ()
   "
   exe "amenu  <silent>  ".s:BASH_Root.'S&nippets.edit\ &local\ templates<Tab>\\ntl          :call BASH_EditTemplates("local")<CR>'
   exe "imenu  <silent>  ".s:BASH_Root.'S&nippets.edit\ &local\ templates<Tab>\\ntl     <C-C>:call BASH_EditTemplates("local")<CR>'
-  exe "amenu  <silent>  ".s:BASH_Root.'S&nippets.edit\ &global\ templates<Tab>\\ntg         :call BASH_EditTemplates("global")<CR>'
-  exe "imenu  <silent>  ".s:BASH_Root.'S&nippets.edit\ &global\ templates<Tab>\\ntg    <C-C>:call BASH_EditTemplates("global")<CR>'
-  exe "amenu  <silent>  ".s:BASH_Root.'S&nippets.reread\ &templates<Tab>\\ntr               :call BASH_RereadTemplates()<CR>'
-  exe "imenu  <silent>  ".s:BASH_Root.'S&nippets.reread\ &templates <Tab>\\ntr         <C-C>:call BASH_RereadTemplates()<CR>'
+	if s:installation == 'system'
+		exe "amenu  <silent>  ".s:BASH_Root.'S&nippets.edit\ &global\ templates<Tab>\\ntg         :call BASH_EditTemplates("global")<CR>'
+		exe "imenu  <silent>  ".s:BASH_Root.'S&nippets.edit\ &global\ templates<Tab>\\ntg    <C-C>:call BASH_EditTemplates("global")<CR>'
+	endif
+  exe "amenu  <silent>  ".s:BASH_Root.'S&nippets.reread\ &templates<Tab>\\ntr               :call BASH_RereadTemplates("yes")<CR>'
+  exe "imenu  <silent>  ".s:BASH_Root.'S&nippets.reread\ &templates <Tab>\\ntr         <C-C>:call BASH_RereadTemplates("yes")<CR>'
   exe "amenu            ".s:BASH_Root.'S&nippets.switch\ template\ st&yle<Tab>\\nts         :BashStyle<Space>'
   exe "imenu            ".s:BASH_Root.'S&nippets.switch\ template\ st&yle<Tab>\\nts    <C-C>:BashStyle<Space>'
 	"
@@ -525,20 +527,22 @@ function!	BASH_InitMenu ()
 	"
 	"---------- submenu string comparison ------------------------------------------------------------
 	"
-	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &zero<Tab>-z									  	  a[ -z  ]<Left><Left>'
-	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &non-zero<Tab>-n									  a[ -n  ]<Left><Left>'
-	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ &equal<Tab>==															 a[  ==  ]<Esc>bhi'
-	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ n&ot\ equal<Tab>!=													 a[  !=  ]<Esc>bhi'
-	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &before\ string2\ lexicograph\.<Tab><		  a[  <  ]<Esc>bhi'
-	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &after\ string2\ lexicograph\.<Tab>>			  a[  >  ]<Esc>bhi'
-	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.string\ matches\ &regexp<Tab>=~												 a[[  =~  ]]<Esc>2bhi'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &zero<Tab>-z									  a[ -z  ]<Left><Left>'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &non-zero<Tab>-n								a[ -n  ]<Left><Left>'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ &equal\ (1)<Tab>=															a[  =  ]<Esc>bhi'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ e&qual\ (2)<Tab>==														a[  ==  ]<Esc>bhi'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ n&ot\ equal<Tab>!=												a[  !=  ]<Esc>bhi'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &before\ string2\ lexicograph\.<Tab><	a[  <  ]<Esc>bhi'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &after\ string2\ lexicograph\.<Tab>>		a[  >  ]<Esc>bhi'
+	exe "	noremenu ".s:BASH_Root.'&Tests.string\ &comparison.string\ matches\ &regexp<Tab>=~												a[[  =~  ]]<Esc>2bhi'
 	"
-	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &zero<Tab>-z											  [ -z  ]<Left><Left>'
-	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &non-zero<Tab>-n									  [ -n  ]<Left><Left>'
-	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ &equal<Tab>==															 [  ==  ]<Esc>bhi'
-	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ n&ot\ equal<Tab>!=													 [  !=  ]<Esc>bhi'
-	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &before\ string2\ lexicograph\.<Tab><		  [  <  ]<Esc>bhi'
-	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &after\ string2\ lexicograph\.<Tab>>			  [  >  ]<Esc>bhi'
+	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &zero<Tab>-z										 [ -z  ]<Left><Left>'
+	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.length\ of\ string\ is\ &non-zero<Tab>-n								 [ -n  ]<Left><Left>'
+	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ &equal\ (1)<Tab>=															 [  =  ]<Esc>bhi'
+	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ e&qual\ (2)<Tab>==														 [  ==  ]<Esc>bhi'
+	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.strings\ are\ n&ot\ equal<Tab>!=												 [  !=  ]<Esc>bhi'
+	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &before\ string2\ lexicograph\.<Tab><	 [  <  ]<Esc>bhi'
+	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.string1\ sorts\ &after\ string2\ lexicograph\.<Tab>>		 [  >  ]<Esc>bhi'
 	exe "inoremenu ".s:BASH_Root.'&Tests.string\ &comparison.string\ matches\ &regexp<Tab>=~												 [[  =~  ]]<Esc>2bhi'
 	"
 	exe "	noremenu ".s:BASH_Root.'&Tests.file\ exists\ and\ is\ &owned\ by\ the\ effective\ UID<Tab>-O							 a[ -O  ]<Left><Left>'
@@ -780,10 +784,6 @@ function!	BASH_InitMenu ()
   exe "inoremenu ".s:BASH_Root.'Rege&x.[:&word:]<Tab>\\pw     [:word:]'
   exe "inoremenu ".s:BASH_Root.'Rege&x.[:&xdigit:]<Tab>\\px   [:xdigit:]'
 	"
-"	exe " noremenu ".s:BASH_Root.'Rege&x.&[\ \ \ ]   a[]<Left>'
-"	exe "inoremenu ".s:BASH_Root.'Rege&x.&[\ \ \ ]    []<Left>'
-"	exe "vnoremenu ".s:BASH_Root.'Rege&x.&[\ \ \ ]   s[]<Esc>P'
-	"
 	exe "amenu ".s:BASH_Root.'Rege&x.-Sep2-      :'
 	"
 	exe "anoremenu ".s:BASH_Root.'Rege&x.${BASH_REMATCH[&0]}    	     a${BASH_REMATCH[0]}'
@@ -862,10 +862,12 @@ function!	BASH_InitMenu ()
 	if	!s:MSWIN
 		exe " menu <silent> ".s:BASH_Root.'&Run.start\ &debugger<Tab>\\rd\ \ \ \ <F9>           :call BASH_Debugger()<CR>'
 		exe "imenu <silent> ".s:BASH_Root.'&Run.start\ &debugger<Tab>\\rd\ \ \ \ <F9>      <C-C>:call BASH_Debugger()<CR>'
+	endif
 		exe " menu <silent> ".s:BASH_Root.'&Run.save\ +\ &check\ syntax<Tab>\\rc\ \ <A-F9>      :call BASH_SyntaxCheck()<CR>'
 		exe "imenu <silent> ".s:BASH_Root.'&Run.save\ +\ &check\ syntax<Tab>\\rc\ \ <A-F9> <C-C>:call BASH_SyntaxCheck()<CR>'
 		exe " menu <silent> ".s:BASH_Root.'&Run.syntax\ check\ o&ptions<Tab>\\rco               :call BASH_SyntaxCheckOptionsLocal()<CR>'
 		exe "imenu <silent> ".s:BASH_Root.'&Run.syntax\ check\ o&ptions<Tab>\\rco          <C-C>:call BASH_SyntaxCheckOptionsLocal()<CR>'
+	if	!s:MSWIN
 		exe " menu <silent> ".s:BASH_Root.'&Run.make\ script\ &executable<Tab>\\re              :call BASH_MakeScriptExecutable()<CR>'
 		exe "imenu <silent> ".s:BASH_Root.'&Run.make\ script\ &executable<Tab>\\re         <C-C>:call BASH_MakeScriptExecutable()<CR>'
 	endif
@@ -930,8 +932,8 @@ function!	BASH_InitMenu ()
 		exe " menu  <silent>  ".s:BASH_Root.'&Help.&manual\ (utilities)<Tab>\\hm             :call BASH_help("m")<CR>'
 		exe "imenu  <silent>  ".s:BASH_Root.'&Help.&manual\ (utilities)<Tab>\\hm        <C-C>:call BASH_help("m")<CR>'
 		"
-		exe " menu  <silent>  ".s:BASH_Root.'&Help.bash-&support<Tab>\\hp            :call BASH_HelpBASHsupport()<CR>'
-		exe "imenu  <silent>  ".s:BASH_Root.'&Help.bash-&support<Tab>\\hp       <C-C>:call BASH_HelpBASHsupport()<CR>'
+		exe " menu  <silent>  ".s:BASH_Root.'&Help.bash-&support<Tab>\\hbs           :call BASH_HelpBASHsupport()<CR>'
+		exe "imenu  <silent>  ".s:BASH_Root.'&Help.bash-&support<Tab>\\hbs      <C-C>:call BASH_HelpBASHsupport()<CR>'
 	endif
 	"
 endfunction		" ---------- end of function  BASH_InitMenu  ----------
@@ -1103,19 +1105,43 @@ endfunction    " ----------  end of function BASH_ShoptMenus  ----------
 "  BASH_RereadTemplates     {{{1
 "  rebuild commands and the menu from the (changed) template file
 "------------------------------------------------------------------------------
-function! BASH_RereadTemplates ()
+function! BASH_RereadTemplates ( msg )
 		let s:style							= 'default'
     let s:BASH_Template     = { 'default' : {} }
     let s:BASH_FileVisited  = []
-    call BASH_ReadTemplates(s:BASH_GlobalTemplateFile)
-    echomsg "templates rebuilt from '".s:BASH_GlobalTemplateFile."'"
+		let	messsage							= ''
 		"
-		if !s:MSWIN && s:installation == 'system' && filereadable( s:BASH_LocalTemplateFile )
-			call BASH_ReadTemplates( s:BASH_LocalTemplateFile )
-			echomsg " and from '".s:BASH_LocalTemplateFile."'"
+		if s:installation == 'system'
+			"
+			if filereadable( s:BASH_GlobalTemplateFile )
+				call BASH_ReadTemplates( s:BASH_GlobalTemplateFile )
+			else
+				echomsg "Global template '.s:BASH_GlobalTemplateFile.' file not readable."
+				return
+			endif
+			let	messsage	= "Templates read from '".s:BASH_GlobalTemplateFile."'"
+			"
+			if filereadable( s:BASH_LocalTemplateFile )
+				call BASH_ReadTemplates( s:BASH_LocalTemplateFile )
+				let messsage	= messsage." and '".s:BASH_LocalTemplateFile."'"
+			endif
+			"
+		else
+			"
+			if filereadable( s:BASH_LocalTemplateFile )
+				call BASH_ReadTemplates( s:BASH_LocalTemplateFile )
+				let	messsage	= "Templates read from '".s:BASH_LocalTemplateFile."'"
+			else
+				echomsg "Local template '".s:BASH_LocalTemplateFile."' file not readable." 
+				return
+			endif
+			"
 		endif
-endfunction    " ----------  end of function BASH_RereadTemplates  ----------
+		if a:msg == 'yes'
+			echomsg messsage.'.'
+		endif
 
+endfunction    " ----------  end of function BASH_RereadTemplates  ----------
 "------------------------------------------------------------------------------
 "  BASH_BrowseTemplateFiles     {{{1
 "------------------------------------------------------------------------------
@@ -1654,25 +1680,26 @@ endfunction		" ---------- end of function  BASH_GetLineEndCommCol  ----------
 "------------------------------------------------------------------------------
 "  Comments : single line-end comment    {{{1
 "------------------------------------------------------------------------------
-function! BASH_LineEndComment ()
-	if !exists("b:BASH_LineEndCommentColumn")
-		let	b:BASH_LineEndCommentColumn	= s:BASH_LineEndCommColDefault
-	endif
-	" ----- trim whitespaces -----
-	exe "s/\s\*$//"
-	let linelength= virtcol("$") - 1
+function! BASH_LineEndComment ( )
+  if !exists("b:BASH_LineEndCommentColumn")
+    let b:BASH_LineEndCommentColumn = s:BASH_LineEndCommColDefault
+  endif
+  " ----- trim whitespaces -----
+	exe 's/\s*$//'
+  let linelength= virtcol("$") - 1
 	let	diff	= 1
 	if linelength < b:BASH_LineEndCommentColumn
 		let diff	= b:BASH_LineEndCommentColumn -1 -linelength
 	endif
 	exe "normal	".diff."A "
-	exe "normal A# "
-endfunction		" ---------- end of function  BASH_LineEndComment  ----------
+	call BASH_InsertTemplate('comment.end-of-line-comment')
+endfunction   " ---------- end of function  BASH_LineEndComment  ----------
 "
 "------------------------------------------------------------------------------
 "  Comments : multi line-end comments    {{{1
 "------------------------------------------------------------------------------
-function! BASH_MultiLineEndComments ()
+function! BASH_MultiLineEndComments ( )
+	"
   if !exists("b:BASH_LineEndCommentColumn")
 		let	b:BASH_LineEndCommentColumn	= s:BASH_LineEndCommColDefault
   endif
@@ -1688,19 +1715,29 @@ function! BASH_MultiLineEndComments ()
 	let	maxlength	= max( [b:BASH_LineEndCommentColumn, maxlength+1] )
 	"
 	" ----- fill lines with blanks -----
-	let	linenumber	= pos0
-	normal '<
-	while linenumber <= pos1
-		if getline(".") !~ "^\\s*$"
+	for linenumber in range( pos0, pos1 )
+		exe ":".linenumber
+		if getline(linenumber) !~ '^\s*$'
 			let diff	= maxlength - virtcol("$")
 			exe "normal	".diff."A "
-			exe "normal	$A# "
+			call BASH_InsertTemplate('comment.end-of-line-comment')
 		endif
-		let linenumber=linenumber+1
-		normal j
-	endwhile
+	endfor
+	"
 	" ----- back to the begin of the marked block -----
-	normal '<
+	stopinsert
+	normal '<$
+	if match( getline("."), '\/\/\s*$' ) < 0
+		if search( '\/\*', 'bcW', line(".") ) > 1
+			normal l
+		endif
+		let save_cursor = getpos(".")
+		if getline(".")[save_cursor[2]+1] == ' '
+			normal l
+		endif
+	else
+		normal $
+	endif
 endfunction		" ---------- end of function  BASH_MultiLineEndComments  ----------
 "
 "------------------------------------------------------------------------------
@@ -1904,30 +1941,63 @@ function! BASH_help( type )
 		set filetype=man
 		silent exe ":%!".s:BASH_Man.' '.catalog.' '.item
 
+		if s:MSWIN
+			call s:bash_RemoveSpecialCharacters()
+		endif
+
 	endif
 	"
 	"-------------------------------------------------------------------------------
-	" open the bash maual
+	" open the bash manual
 	"-------------------------------------------------------------------------------
 	if a:type == 'b'
 		silent exe ":%!man 1 bash"
+
+		if s:MSWIN
+			call s:bash_RemoveSpecialCharacters()
+		endif
+
+		if item != ''
+				" assign to the search pattern register "" :
+				let @/=item
+				echo "use n/N to search for '".item."'"
+		endif
 	endif
 
 	setlocal nomodifiable
 endfunction		" ---------- end of function  BASH_help  ----------
 "
 "------------------------------------------------------------------------------
+"  remove <backspace><any character> in CYGWIN man(1) output   {{{1
+"  remove           _<any character> in CYGWIN man(1) output   {{{1
+"------------------------------------------------------------------------------
+"
+function! s:bash_RemoveSpecialCharacters ( )
+	let	patternunderline	= '_\%x08'
+	let	patternbold				= '\%x08.'
+	setlocal modifiable
+	if search(patternunderline) != 0
+		silent exe ':%s/'.patternunderline.'//g'
+	endif
+	if search(patternbold) != 0
+		silent exe ':%s/'.patternbold.'//g'
+	endif
+	setlocal nomodifiable
+	silent normal gg
+endfunction		" ---------- end of function  s:bash_RemoveSpecialCharacters   ----------
+"
+"------------------------------------------------------------------------------
 "  Run : Syntax Check, check if local options does exist    {{{1
 "------------------------------------------------------------------------------
 "
-function! s:Find_option ( list, option )
+function! s:bash_find_option ( list, option )
 	for item in a:list
 		if item == a:option
 			return 0
 		endif
 	endfor
 	return -1
-endfunction    " ----------  end of function s:Find_option  ----------
+endfunction    " ----------  end of function s:bash_find_option  ----------
 "
 function! BASH_SyntaxCheckOptions( options )
 	let startpos=0
@@ -1939,7 +2009,7 @@ function! BASH_SyntaxCheckOptions( options )
 		" remove trailing whitespaces
 		let optionname  = substitute ( optionname, '\s\+$', "", "" )
 		" check name
-		let found				= s:Find_option ( s:BashShopt, optionname )
+		let found				= s:bash_find_option ( s:BashShopt, optionname )
 		if found < 0
 			redraw
 			echohl WarningMsg | echo ' no such shopt name :  "'.optionname.'"  ' | echohl None
@@ -1984,6 +2054,7 @@ function! BASH_SyntaxCheck ()
 	exe	":update"
 	let	makeprg_saved	= &makeprg
 	exe	":setlocal makeprg=".s:BASH_BASH
+	let l:fullname				= expand("%:p")
 	"
 	" check global syntax check options / reset in case of an error
 	if BASH_SyntaxCheckOptions( s:BASH_SyntaxCheckOptionsGlob ) != 0
@@ -2000,7 +2071,7 @@ function! BASH_SyntaxCheck ()
 	" ignore any lines that didn't match one of the patterns
 	"
 	exe	':setlocal errorformat='.s:BASH_Errorformat
-	silent exe ":make -n ".options." -- ./% "
+	silent exe ":make -n ".options.' -- "'.l:fullname.'"'
 	exe	":botright cwindow"
 	exe	':setlocal errorformat='
 	exe ":setlocal makeprg=".makeprg_saved
@@ -2152,7 +2223,7 @@ function! BASH_Run ( mode )
 	endif
 	"
 	"------------------------------------------------------------------------------
-	"  Run : run from the vim command line
+	"  Run : run from the vim command line (Linux only)
 	"------------------------------------------------------------------------------
 	"
 	if s:BASH_OutputGvim == "vim"
@@ -2507,11 +2578,11 @@ function! BASH_Settings ()
 			let txt = txt.'  local template directory :  "'.s:BASH_LocalTemplateDir."\"\n"
 		endif
 	else
-		let txt = txt.'  local template directory :  "'.s:BASH_GlobalTemplateDir."\"\n"
+		let txt = txt.'  local template directory :  "'.s:BASH_LocalTemplateDir."\"\n"
 	endif
 	let txt = txt.'glob. syntax check options :  "'.s:BASH_SyntaxCheckOptionsGlob."\"\n"
 	if exists("b:BASH_SyntaxCheckOptionsLocal")
-		let txt = txt." buf. syntax check options :  ".b:BASH_SyntaxCheckOptionsLocal."\"en"
+		let txt = txt.' buf. syntax check options :  "'.b:BASH_SyntaxCheckOptionsLocal."\"\n"
 	endif
 	" ----- dictionaries ------------------------
 	if g:BASH_Dictionary_File != ""
@@ -2529,7 +2600,9 @@ function! BASH_Settings ()
 	let txt = txt."                   Ctrl-F9 :  update file, run script           \n"
 	let txt = txt."                    Alt-F9 :  update file, run syntax check     \n"
 	let txt = txt."                  Shift-F9 :  edit command line arguments       \n"
+	if	!s:MSWIN
 	let txt = txt."                        F9 :  debug script (".s:BASH_Debugger.")\n"
+	endif
 	let	txt = txt."___________________________________________________________________________\n"
 	let	txt = txt." Bash-Support, Version ".g:BASH_Version." / Dr.-Ing. Fritz Mehner / mehner@fh-swf.de\n\n"
 	echo txt
@@ -2863,6 +2936,12 @@ endif
 "
 if has("autocmd")
 	"
+	if	s:MSWIN
+		" needed to turn off CYGWIN error messages :
+		"
+		exe "autocmd BufNewFile,BufRead           *.sh set fileformat=".s:BASH_FileFormat
+	endif
+	"
 	" Bash-script : insert header, write file, make it executable
 	"
 	if !exists( 'g:BASH_AlsoBash' )
@@ -2903,10 +2982,7 @@ endif " has("autocmd")
 "------------------------------------------------------------------------------
 "  READ THE TEMPLATE FILES
 "------------------------------------------------------------------------------
-call BASH_ReadTemplates( s:BASH_GlobalTemplateFile )
-if !s:MSWIN && s:installation == 'system' && filereadable( s:BASH_LocalTemplateFile )
-	call BASH_ReadTemplates( s:BASH_LocalTemplateFile )
-endif
+call BASH_RereadTemplates('no')
 "
 "------------------------------------------------------------------------------
 " vim: tabstop=2 shiftwidth=2 foldmethod=marker
