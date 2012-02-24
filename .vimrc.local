@@ -7,8 +7,9 @@ set hls
 set grepprg=grep\ -nH\ $*
 filetype indent on
 let g:tex_flavor='latex'
-let g:Tex_FormatDependency_pdf='dvi,ps,pdf'
-let g:Tex_DefaultTargetFormat='pdf'
+let g:Tex_FormatDependency_pdf='dvi,pdf'
+let g:Tex_DefaultTargetFormat='dvi'
+let g:Tex_CompileRule_pdf = 'dvipdf $.pdf*'
 
 "# changelog settings ####################
 let g:changelog_username = "Darshaka Pathirana  <dpat@syn-net.org>"
