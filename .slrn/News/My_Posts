@@ -1,0 +1,232 @@
+From jkirk@sbox.tu-graz.ac.at Sun Dec 19 15:13:34 2010
+Newsgroups: tu-graz.lv.sicherheitsaspekte
+From: Darshaka Pathirana <jkirk@sbox.tu-graz.ac.at>
+Subject: malloc(): memory corruption
+Date: Sun, 19 Dec 2010 15:13:24 +0100
+User-Agent: slrn/pre1.0.0-18 (Linux)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hallo!
+
+Ich habe Probleme einen Fehler in unserem Code
+(repository: sase2010g21/markush/irc-message-detector.c:415) zu verstehen:
+
+% ./ircfilter < test.txt
+IMD checking following line: :eve!~kvkiv@127.0.0.1 PRIVMSG #sase2010g21 :hallo alle
+IMD: data_struct_new
+IMD: (checkParams) PRIVMSG found!
+*** glibc detected *** ./ircfilter: malloc(): memory corruption: 0x0000000001b05cb0 ***
+======= Backtrace: =========
+/lib/libc.so.6(+0x71ad6)[0x7f060eb6bad6]
+/lib/libc.so.6(+0x74b6d)[0x7f060eb6eb6d]
+/lib/libc.so.6(__libc_malloc+0x70)[0x7f060eb70930]
+./ircfilter[0x4027b5]
+./ircfilter[0x402e9f]
+./ircfilter[0x403f59]
+./ircfilter[0x404117]
+./ircfilter[0x40153d]
+/lib/libc.so.6(__libc_start_main+0xfd)[0x7f060eb18c4d]
+./ircfilter[0x4013e9]
+======= Memory map: ========
+00400000-00406000 r-xp 00000000 fe:06 745623 /home/jkirk.generic/projects/tug.sase2010/sase2010g21/task1/ircfilter
+[snip]
+[3]    5789 abort (core dumped)  ./ircfilter < test.txt
+
+% cat test.txt
+:eve!~kvkiv@127.0.0.1 PRIVMSG #sase2010g21 :hallo alle
+
+Ein Backtrace zeigt folgendes:
+
+#0  0x00007ffff7478165 in *__GI_raise (sig=<value optimized out>) at ../nptl/sysdeps/unix/sysv/linux/raise.c:64
+#1  0x00007ffff747af70 in *__GI_abort () at abort.c:92
+#2  0x00007ffff74ae27b in __libc_message (do_abort=<value optimized out>, fmt=<value optimized out>) at ../sysdeps/unix/sysv/linux/libc_fatal.c:189
+#3  0x00007ffff74b7ad6 in malloc_printerr (action=3, str=0x7ffff756bbd0 "malloc(): memory corruption", ptr=<value optimized out>) at malloc.c:6267
+#4  0x00007ffff74bab6d in _int_malloc (av=0x7ffff77a2e40, bytes=<value optimized out>) at malloc.c:4396
+#5  0x00007ffff74bc930 in *__GI___libc_malloc (bytes=8) at malloc.c:3661
+#6  0x00000000004027b5 in checkParamsPrivmsg (params=0x607c90 "#sase2010g21 :hallo alle") at irc-message-detector.c:415
+#7  0x0000000000402e9f in checkParams (params=0x607c90 "#sase2010g21 :hallo alle") at irc-message-detector.c:678
+#8  0x0000000000403f59 in checkLine (line=<value optimized out>) at irc-message-detector.c:782
+#9  0x0000000000404117 in imd_message_detector (line=0x607010 ":eve!~kvkiv@127.0.0.1 PRIVMSG #sase2010g21 :hallo alle") at irc-message-detector.c:805
+#10 0x000000000040153d in main (argc=<value optimized out>, argv=<value optimized out>) at ircfilter.c:61
+
+Das Problem tritt allerdings im Moment nur auf meinem Notebook
+(Debian/Squeeze 64Bit) auf. Auf dem Pluto und auf dem
+Vbox-Referenzsystem scheint das Problem nicht aufzutreten. 
+
+Ist es ein Problem im Code oder was könnte sonst das Problem sein?
+
+LG
+ - Darsha
+
+
+From jkirk@sbox.tu-graz.ac.at Wed Dec 22 15:35:25 2010
+Newsgroups: tu-graz.lv.sicherheitsaspekte
+From: Darshaka Pathirana <jkirk@sbox.tu-graz.ac.at>
+Subject: Re: malloc(): memory corruption
+References: <iel3u4$gep$1@fstgss00.tu-graz.ac.at>
+ <ielgu9$t7q$1@fstgss00.tu-graz.ac.at>
+Date: Wed, 22 Dec 2010 15:35:25 +0100
+User-Agent: slrn/pre1.0.0-18 (Linux)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 2010-12-19@17:57:06, Johannes Winter <johannes.winter@iaik.tugraz.at> wrote:
+> Darshaka Pathirana wrote:
+> [...]
+>> Das Problem tritt allerdings im Moment nur auf meinem Notebook
+>> (Debian/Squeeze 64Bit) auf. Auf dem Pluto und auf dem
+>> Vbox-Referenzsystem scheint das Problem nicht aufzutreten.
+>> 
+>> Ist es ein Problem im Code oder was könnte sonst das Problem sein?
+> [...]
+> ... dürfte ein Problem in eurem Code sein.
+
+Thx. War tatsächlich ein Problem in unserem Code. (Wie verwunderlich
+;))
+
+ - Darsha
+
+
+From jkirk@sbox.tu-graz.ac.at Tue Jun  7 15:48:51 2011
+Newsgroups: tu-graz.anzeigen.veranstaltungen
+From: Darshaka Pathirana <jkirk@sbox.tu-graz.ac.at>
+Subject: S: 1 od. 2 Tickets =?UTF-8?Q?f=C3=BCr?= Nova Rock 2011 3-Tages
+ Festivalpass
+Date: Tue, 7 Jun 2011 15:48:51 +0200
+User-Agent: slrn/pre1.0.0-18 (Linux)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hi!
+
+Suche 1 oder 2 Tickets (3-Tages Festivalpass) für Nova Rock 2011.
+
+Bitte melden unter: +436643400526
+
+Danke && LG
+ - Darsha
+
+From jkirk@sbox.tu-graz.ac.at Wed Jun  8 19:04:02 2011
+Newsgroups: tu-graz.anzeigen.veranstaltungen
+From: Darshaka Pathirana <jkirk@sbox.tu-graz.ac.at>
+Subject: Re: B: Nova Rock 3-Tagespass, 2 =?UTF-8?Q?St=C3=BCck?=
+References: <isnv64$5bs$1@news.tugraz.at> <iso0qf$9jo$1@news.tugraz.at>
+Date: Wed, 8 Jun 2011 19:04:02 +0200
+User-Agent: slrn/pre1.0.0-18 (Linux)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 2011-06-08@14:26:24, Thomas Brunner <t.brunner@student.tugraz.at> wrote:
+> Am 08.06.2011 15:58, schrieb Thomas Brunner:
+>> Hallo,
+>>
+>> Bei Interesse schreibt mir bitte ein E-mail, bzw lässt sich das
+>> wahrscheinlich schneller mit einem Anruf abhandeln:
+>> Tel. 0664 36 13 300
+>>
+> sind versprochen.
+
+Falls du sie doch nicht los wirst / geworden bist; ich hätt noch
+Interesse. Kannst mich auch gerne jederzeit anrufen: +43 664 3400526.
+
+LG,
+ - Darsha
+
+
+From jkirk@sbox.tu-graz.ac.at Fri Oct 21 15:25:40 2011
+Newsgroups: tu-graz.betriebssysteme.linux
+From: Darshaka Pathirana <jkirk@sbox.tu-graz.ac.at>
+Subject: Re: wget auf samba-mount, Probleme mit Dateinamen
+References: <j62pjl$kh4$1@news.tugraz.at>
+Date: Fri, 21 Oct 2011 15:25:39 +0200
+User-Agent: slrn/pre1.0.0-18 (Linux)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 2011-09-29@21:57:09, Mario Grünwald <public_grueni@gmx.at> wrote:
+>
+> Ich hab folgendes Problem:
+>
+> Ich hole per wget einige Dateien. Die sollten auf ein Samba Mount. 
+> Leider kommen teilweise Zeichen vor, die zwar als Linux-Dateinamen kein, 
+> aber für Windows ein Problem darstellen. Aus diesem Grund hab ich mir 
+> gedacht, dass ich direkt in eine große Datei schreibe. Hab mir dazu 
+> archivmount und fuse-zip angeschaut. Leider kommen beide mit der 
+> Datenmenge (ca. 100 GB) oder den vielen Dateien nicht klar.
+>
+> Hat jemand eine Idee wie ich das lösen könnte?
+>
+> Aufgrund der hohen Datenmenge möchte ich nicht zuerst unter Linux 
+> zwischenspeichern und erst danach eine Archiv-Datei daraus basteln.
+
+Hast du dir die Option "--restrict-file-names=MODES" angeschaut?
+
+Mit "--restrict-file-names=windows" sollte es für deine
+Windows-Rechner keine Probleme geben. (Alternativ wäre "ascii" auch
+eine Möglichkeit).
+
+HTH && LG,
+ - Darsha
+
+
+From jkirk@sbox.tu-graz.ac.at Tue Nov  1 16:28:00 2011
+Newsgroups: tu-graz.TUGRAZonline
+From: Darshaka Pathirana <jkirk@sbox.tu-graz.ac.at>
+Subject: Email-Benachrichtung bei abgesagter LV
+Date: Tue, 1 Nov 2011 16:28:00 +0100
+User-Agent: slrn/pre1.0.0-18 (Linux)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hallo!
+
+Ich hab jetzt ziemlich lange gesucht, finde aber folgende Einstellung
+nicht (vielleicht seh ich den Wald vor lauter Bäumen nicht):
+
+Ich hätte gerne eine E-Mail-Benachrichtigung wenn LVs (zu denen ich
+angemeldet bin und welche in meinem TUGOnline-Terminkalender
+aufscheinen) als "abgesagt" markiert werden.
+
+Ich bilde mir ein, dass hat schon mal funktioniert. Wo kann ich prüfen
+ob die Einstellungen bei mir richtig sind?
+
+Thx & LG,
+ - Darsha
+
+
+From jkirk@sbox.tu-graz.ac.at Tue Nov  1 20:17:49 2011
+Newsgroups: tu-graz.TUGRAZonline
+From: Darshaka Pathirana <jkirk@sbox.tu-graz.ac.at>
+Subject: Re: Email-Benachrichtung bei abgesagter LV
+References: <j8p360$ch1$1@news.tugraz.at> <j8p6ve$voc$1@news.tugraz.at>
+Date: Tue, 1 Nov 2011 20:17:49 +0100
+User-Agent: slrn/pre1.0.0-18 (Linux)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hi!
+
+On 2011-11-01@16:32:46, Stefan More <TUGnews@2904.cc> wrote:
+>
+> Das bekommt man doch so oder so, oder?
+> Musste da nie was aktivieren..
+
+Hmm. Ok. Dann anders gefragt: kann man das überhaupt umstellen? Wenn
+ja, wo?
+
+Und falls wer von den Admins / Developern das liest: Ich hab gestern,
+Montag dem 31.10.2011, für die abgesagte LV "Technische Grundlagen des
+Wissensmanagement" (707.009) um 12:00 keine Benachrichtigung bekommen.
+Lag der Fehler bei mir?
+
+Thx && LG,
+ - Darsha
+

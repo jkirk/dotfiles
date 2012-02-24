@@ -17,6 +17,8 @@ ln -sf ${CONFIGS}/.vimrc.local ${HOME}/.vimrc.local
 ln -sf ${CONFIGS}/.quiltrc ${HOME}/.quiltrc
 ln -sf ${CONFIGS}/.gvimrc ${HOME}/.gvimrc
 ln -sf ${CONFIGS}/.screenrc ${HOME}/.screenrc
+ln -sf ${CONFIGS}/.slrn ${HOME}/.slrn
+ln -sf ${CONFIGS}/.slrnrc ${HOME}/.slrnrc
 ln -sf ${CONFIGS}/.todo ${HOME}
 ln -sf ${CONFIGS}/.gitconfig ${HOME}/.gitconfig
 ln -sf ${CONFIGS}/.hgrc ${HOME}/.hgrc
