@@ -10,6 +10,7 @@ done
 
 ln -sf ${CONFIGS}/.zshrc ${HOME}/.zshrc
 ln -sf ${CONFIGS}/.zshrc.local ${HOME}/.zshrc.local
+ln -sf ${CONFIGS}/.zshenv ${HOME}/.zshenv
 ln -sf ${CONFIGS}/.vim ${HOME}
 ln -sf ${CONFIGS}/.vimrc ${HOME}/.vimrc
 ln -sf ${CONFIGS}/.vimrc.local ${HOME}/.vimrc.local
