@@ -224,7 +224,7 @@ set mime_charset "iso-8859-15"
 % If 11, thread then sort by date with most recent last.
 set sorting_method 12
 set custom_sort_by_threads 1
-set custom_sort_order Highscore,Date|date
+set custom_sort_order highscore,date
 
 % Determines where to use the local timezone
 % 0 always GMT, 1 local timezone in overview_date_format, 2 local timezone in 
