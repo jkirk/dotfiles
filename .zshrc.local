@@ -25,6 +25,10 @@ function qqget() {
         wget -c -U "QuickTime/7.6.2" "${BASE}${FILE}"
 }
 
+function git_diff_wrapper() {
+	vimdiff "$2" "$5"
+}	
+
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
 	alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
 	alias tmm="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
