@@ -1,26 +1,20 @@
-#!/bin/sh
+#!/bin/bash
 
 SCRIPT=$(readlink -f $0)
-CONFIGS=$(dirname ${SCRIPT})
+CONFDIR=$(dirname ${SCRIPT})
 
-
-for config in ${CONFIGS}/.*; do
-	echo $config
+for config in ${CONFDIR}/.[^.]?*; do
+	BASE=$(basename ${config})
+	HOMEBASE=${HOME}/${BASE}
+	BACKUP="${HOMEBASE}.$(date --rfc-3339=seconds)"
+	if [ -e ${HOMEBASE} ] && [ ! -L ${HOMEBASE} ]; then
+		mv ${HOMEBASE} "${BACKUP}"
+		echo "Backup of ${HOMEBASE} created -> ${BACKUP}"
+	fi
+	rm ${HOMEBASE}
+	ln -sf ${config} ${HOMEBASE}
+	echo Created: ${HOMEBASE}
 done
 
-ln -sf ${CONFIGS}/.zshrc ${HOME}/.zshrc
-ln -sf ${CONFIGS}/.zshrc.local ${HOME}/.zshrc.local
-ln -sf ${CONFIGS}/.zshenv ${HOME}/.zshenv
-ln -sf ${CONFIGS}/.vim ${HOME}
-ln -sf ${CONFIGS}/.vimrc ${HOME}/.vimrc
-ln -sf ${CONFIGS}/.vimrc.local ${HOME}/.vimrc.local
-ln -sf ${CONFIGS}/.quiltrc ${HOME}/.quiltrc
-ln -sf ${CONFIGS}/.gvimrc ${HOME}/.gvimrc
-ln -sf ${CONFIGS}/.screenrc ${HOME}/.screenrc
-ln -sf ${CONFIGS}/.slrn ${HOME}/.slrn
-ln -sf ${CONFIGS}/.slrnrc ${HOME}/.slrnrc
-ln -sf ${CONFIGS}/.todo ${HOME}
-ln -sf ${CONFIGS}/.gitconfig ${HOME}/.gitconfig
-ln -sf ${CONFIGS}/.hgrc ${HOME}/.hgrc
-ln -sf ${CONFIGS}/.dput.cf ${HOME}/.dput.cf
+exit 0
 
