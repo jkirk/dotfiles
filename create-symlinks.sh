@@ -11,7 +11,8 @@ for config in ${CONFDIR}/.[^.]?*; do
 		mv ${HOMEBASE} "${BACKUP}"
 		echo "Backup of ${HOMEBASE} created -> ${BACKUP}"
 	fi
-	rm ${HOMEBASE}
+
+	[ -L ${HOMEBASE} ] && rm ${HOMEBASE}
 	ln -sf ${config} ${HOMEBASE}
 	echo Created: ${HOMEBASE}
 done
