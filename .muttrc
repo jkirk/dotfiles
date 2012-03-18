@@ -137,5 +137,10 @@ source /usr/lib/mutt/source-muttrc.d|
 
 # user configuration
 
+set realname="Darshaka Pathirana"
+set from="dpat@syn-net.org"
+set use_from=yes
+set edit_headers = yes
+
 set spoolfile="imaps://dpat@syn-net.org@imap.syn-net.org/INBOX"
 
