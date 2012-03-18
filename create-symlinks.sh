@@ -3,12 +3,12 @@
 SCRIPT=$(readlink -f $0)
 CONFDIR=$(dirname ${SCRIPT})
 
-for config in ${CONFDIR}/.[^.]?*; do
+for config in ${CONFDIR}/.*; do
 	BASE=$(basename ${config})
 	HOMEBASE=${HOME}/${BASE}
 	BACKUP="${HOMEBASE}.$(date --rfc-3339=seconds)"
 
-	if [ "${BASE}" == ".git" ]; then
+	if [ "${BASE}" == ".git" ] || [ "${BASE}" == "." ] || [ "${BASE}" == ".." ]; then
 		continue
 	fi
 
@@ -21,9 +21,9 @@ for config in ${CONFDIR}/.[^.]?*; do
 		rm ${HOMEBASE}
 		echo "Recreated: ${HOMEBASE}"
 	else
-		ln -sf ${config} ${HOMEBASE}
 		echo "Created (new): ${HOMEBASE}"
 	fi
+	ln -sf ${config} ${HOMEBASE}
 done
 
 exit 0
