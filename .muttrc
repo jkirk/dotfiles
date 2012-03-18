@@ -143,4 +143,6 @@ set use_from=yes
 set edit_headers = yes
 
 set spoolfile="imaps://dpat@syn-net.org@imap.syn-net.org/INBOX"
+set folder="imaps://dpat@syn-net.org@imap.syn-net.org/"
+set record="=Sent"
 
