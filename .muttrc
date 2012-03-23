@@ -146,6 +146,7 @@ set spoolfile="imaps://dpat@syn-net.org@imap.syn-net.org/INBOX"
 set folder="imaps://dpat@syn-net.org@imap.syn-net.org/"
 set record="=Sent"
 
+set smtp_url="smtp://dpat@syn-net.org@smtp.syn-net.org:25"
 auto_view text/html
 
 bind index G imap-fetch-mail
