@@ -137,6 +137,9 @@ source /usr/lib/mutt/source-muttrc.d|
 
 # user configuration
 
+set sort_browser=reverse-date # showing mbox list default to newest first
+set sort_aux=last-date-received # showing threads with youngest message last
+
 set realname="Darshaka Pathirana"
 set from="dpat@syn-net.org"
 set use_from=yes
