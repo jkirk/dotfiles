@@ -142,6 +142,7 @@ set sort_aux=last-date-received # showing threads with youngest message last
 
 set realname="Darshaka Pathirana"
 set from="dpat@syn-net.org"
+# alternates "(dpat@syn-net\.org)|(jkirk@sbox\.tu-graz\.ac\.at)"
 set use_from=yes
 set edit_headers = yes
 
@@ -153,4 +154,9 @@ set smtp_url="smtp://dpat@syn-net.org@smtp.syn-net.org:25"
 auto_view text/html
 
 bind index G imap-fetch-mail
+
+macro index \e1 ":set from=dpat@syn-net.org\n"
+macro index \e2 ":set from=jkirk@sbox.tu-graz.ac.at\n"
+macro index \e3 ":set from=darshaka.pathirana@sp-c.at\n"
+
 
