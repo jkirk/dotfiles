@@ -3,8 +3,11 @@
 	email = dpat@syn-net.org
 
 # https://technotales.wordpress.com/2009/05/17/git-diff-with-vimdiff/
+
 # [diff]
-# 	external = git_diff_wrapper
-# 
+	#external = git_diff_wrapper
+
 # [pager]
 # 	diff =
+[diff "odf"]
+	textconv = odt2txt
