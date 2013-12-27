@@ -29,6 +29,18 @@ function git_diff_wrapper() {
 	vimdiff "$2" "$5"
 }	
 
+function dont_sleep() {
+	if [[ $1 == "on" ]]; then 
+		gsettings set org.gnome.desktop.session idle-delay 0
+		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-ac 0
+		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-battery 0
+	elif [[ $1 == "off" ]]; then
+		gsettings set org.gnome.desktop.session idle-delay 120
+		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-ac 300
+		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-battery 120
+	fi
+}
+
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
 	alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
 	alias tmm="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
@@ -40,3 +52,5 @@ if [ -e ${HOME}/projects/scripts/todo.sh ]; then
 	t list
 fi
 
+# vim:ts=4: 
+#
