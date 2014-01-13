@@ -4,7 +4,8 @@ export GPG_TTY
 SAVEHIST=100000
 DEBEMAIL=dpat@syn-net.org
 
-alias oo="/usr/bin/libreoffice"
+alias o="/usr/bin/gnome-open"
+alias -g j="/home/jkirk/Documents/Archive/IT/commandlinefu.txt"
 
 function quicktimebase() {
         FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
