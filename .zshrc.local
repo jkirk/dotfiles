@@ -6,6 +6,8 @@ DEBEMAIL=dpat@syn-net.org
 
 alias o="/usr/bin/gnome-open"
 alias -g j="/home/jkirk/Documents/Archive/IT/commandlinefu.txt"
+alias odt2pdf="libreoffice --headless --convert-to pdf"
+alias cdp2s="cd ~/Projects/spc/avl/AVL\ WBT\ Processes2Success/"
 
 function quicktimebase() {
         FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
