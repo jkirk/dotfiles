@@ -46,6 +46,18 @@ function dont_sleep() {
 	fi
 }
 
+function scangray() {
+	if [[ -z $1 ]]; then
+			return 1
+	fi
+	SCANNER=$(sane-find-scanner | grep CanoScan | awk '{print $10}')
+	TMP=$(mktemp)
+	scanimage --mode G --resolution 150 -x 210 -y 297 --format=tiff -d plustek:$SCANNER > $TMP
+	convert $TMP $1
+}
+
+
+
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
 	alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
 	alias tmm="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
