@@ -3,6 +3,11 @@ filetype plugin on
 set is
 set hls
 
+" shortcuts
+imap mfg Mit freundlichen Grüßen,<cr> - D. Pathirana
+imap lgd Liebe Grüße,<cr> - Darsha
+imap bd Bussi,<cr> - Darsha
+
 "# latex-suite settings ####################
 set grepprg=grep\ -nH\ $*
 filetype indent on
