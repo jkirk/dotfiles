@@ -15,8 +15,8 @@ alias gdiff="git diff"
 
 
 function quicktimebase() {
-        FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
-        BASE=$(echo "$1" | sed -e "s_\(^.*/\).*_\1_")
+	FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
+	BASE=$(echo "$1" | sed -e "s_\(^.*/\).*_\1_")
 }
 
 function qlink() {
@@ -30,9 +30,12 @@ function uuget() {
 }
 
 function qqget() {
-        FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
-        BASE=$(echo "$1" | sed -e "s_\(^.*/\).*_\1_")
-        wget -c -U "QuickTime/7.6.2" "${BASE}${FILE}"
+	quicktimebase $1
+    wget -c -U "QuickTime/7.6.2" "${BASE}${FILE}"
+}
+
+function qget() {
+    wget -c -U "QuickTime/7.6.2" $1
 }
 
 function git_diff_wrapper() {
