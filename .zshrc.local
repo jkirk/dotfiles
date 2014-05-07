@@ -52,6 +52,9 @@ function dont_sleep() {
 		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-ac 300
 		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-battery 120
 	fi
+	if [[ -n $2 ]]; then
+		at +${2}min dont_sleep off
+	fi
 }
 
 function scangray() {
