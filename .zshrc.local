@@ -13,7 +13,6 @@ alias push="git push origin master"
 alias status="git status"
 alias gdiff="git diff"
 
-
 function quicktimebase() {
 	FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
 	BASE=$(echo "$1" | sed -e "s_\(^.*/\).*_\1_")
@@ -67,6 +66,13 @@ function scangray() {
 	convert $TMP $1
 }
 
+function youtube2mp3() {
+	if [[ -z $1 ]]; then
+			return 1
+	fi
+	TITLE=$(youtube-dl -e $1)
+	youtube-dl $1 -o - | ffmpeg -i - -b:a 192k $TITLE.mp3
+}
 
 
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
