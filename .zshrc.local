@@ -3,9 +3,10 @@ export GPG_TTY
 
 SAVEHIST=100000
 DEBEMAIL=dpat@syn-net.org
+LC_TIME=en_US.UTF-8
 
 alias o="/usr/bin/gnome-open"
-alias -g j="/home/jkirk/Documents/Archive/IT/commandlinefu.txt"
+alias -g j="/home/jkirk/Documents/notes/commandlinefu.txt"
 alias odt2pdf="libreoffice --headless --convert-to pdf"
 alias cdp2s="cd ~/Projects/spc/avl/AVL\ WBT\ Processes2Success/"
 alias pull="git pull --rebase origin master"
@@ -61,7 +62,7 @@ function youtube2mp3() {
 			return 1
 	fi
 	TITLE=$(youtube-dl -e $1)
-	youtube-dl $1 -o - | ffmpeg -i - -b:a 192k $TITLE.mp3
+	youtube-dl $1 -o - | ffmpeg -i - -b:a 192k "${TITLE/\//-}.mp3"
 }
 
 
