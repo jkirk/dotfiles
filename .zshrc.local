@@ -65,6 +65,12 @@ function youtube2mp3() {
 	youtube-dl $1 -o - | ffmpeg -i - -b:a 192k "${TITLE/\//-}.mp3"
 }
 
+function qrdisplay() {
+	if [[ -z $1 ]]; then
+			return 1
+	fi
+	qrencode "$1" -o - | display
+}
 
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
 	alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
