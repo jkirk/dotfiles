@@ -13,6 +13,8 @@ alias pull="git pull --rebase origin master"
 alias push="git push origin master"
 alias status="git status"
 alias gdiff="git diff"
+# http://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 function quicktimebase() {
 	FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
