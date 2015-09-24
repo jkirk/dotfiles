@@ -24,6 +24,10 @@ for config in ${CONFDIR}/.*; do
 		echo "Created (new): ${HOMEBASE}"
 	fi
 	ln -sf ${config} ${HOMEBASE}
+	if [ "${BASE}" == ".ssh" ] && [ -d "${BACKUP}" ]; then
+		echo "Copy content of ${BACKUP} back to ${HOMEBASE}"
+		cp -a "${BACKUP}/." "${HOMEBASE}/."
+	fi
 done
 
 exit 0
