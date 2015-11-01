@@ -18,7 +18,8 @@ alias gdiff="git diff"
 # http://askubuntu.com/a/95911
 alias myip2="wget http://ipinfo.io/ip -qO -"
 
-
+# https://twitter.com/climagic/status/551435572490010624
+function mirror(){ mplayer -vf mirror -v tv:// -tv device=/dev/video0:driver=v4l2; }
 
 function quicktimebase() {
 	FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
