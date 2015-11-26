@@ -6,6 +6,7 @@ DEBEMAIL=dpat@syn-net.org
 LC_TIME=en_US.UTF-8
 
 alias o="/usr/bin/gnome-open"
+alias d="dirs -v"
 alias -g j="/home/jkirk/Documents/notes/commandlinefu.txt"
 alias odt2pdf="libreoffice --headless --convert-to pdf"
 alias cdp2s="cd ~/Projects/spc/avl/AVL\ WBT\ Processes2Success/"
@@ -13,6 +14,7 @@ alias pull="git pull --rebase origin master"
 alias push="git push origin master"
 alias status="git status"
 alias gdiff="git diff"
+alias gplog="git log @{1}..HEAD"
 # http://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
 # alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 # http://askubuntu.com/a/95911
