@@ -6,9 +6,10 @@ DEBEMAIL=dpat@syn-net.org
 LC_TIME=en_US.UTF-8
 LC_ALL=en_US.UTF-8
 
+[ -e /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+
 alias o="/usr/bin/gnome-open"
 alias d="dirs -v"
-alias -g j="/home/jkirk/Documents/notes/commandlinefu.txt"
 alias odt2pdf="libreoffice --headless --convert-to pdf"
 alias cdp2s="cd ~/Projects/spc/avl/AVL\ WBT\ Processes2Success/"
 alias pull="git pull --rebase origin master"
