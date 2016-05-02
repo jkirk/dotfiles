@@ -4,6 +4,7 @@ export GPG_TTY
 SAVEHIST=100000
 DEBEMAIL=dpat@syn-net.org
 LC_TIME=en_US.UTF-8
+LC_ALL=en_US.UTF-8
 
 alias o="/usr/bin/gnome-open"
 alias d="dirs -v"
