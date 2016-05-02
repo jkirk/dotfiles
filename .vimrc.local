@@ -1,7 +1,13 @@
 "# general settings ####################
 filetype plugin on
-set is
-set hls
+set incsearch
+set hlsearch
+
+" always use 2 spaces instead of tab
+" see: http://stackoverflow.com/a/234578/2142030
+set tabstop=2
+set shiftwidth=2
+set expandtab
 
 " shortcuts
 imap mfg<cr> Mit freundlichen Grüßen,<cr> - D. Pathirana
