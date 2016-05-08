@@ -26,6 +26,11 @@ alias myip2="wget http://ipinfo.io/ip -qO -"
 # https://twitter.com/climagic/status/551435572490010624
 function mirror(){ mplayer -vf mirror -v tv:// -tv device=/dev/video0:driver=v4l2; }
 
+# http://superuser.com/a/901510/225775
+function shrinkpdf() {
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$2 $1
+}
+
 function quicktimebase() {
 	FILE=$(wget "$1" -O - -o /dev/null | cut -c 45- | sed -e "s/\(^.*mov\).*/\1/")
 	BASE=$(echo "$1" | sed -e "s_\(^.*/\).*_\1_")
