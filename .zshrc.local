@@ -6,7 +6,7 @@ DEBEMAIL=dpat@syn-net.org
 LC_TIME=en_US.UTF-8
 LC_ALL=en_US.UTF-8
 
-[ -e /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+[ -x /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 
 alias o="/usr/bin/gnome-open"
 alias d="dirs -v"
