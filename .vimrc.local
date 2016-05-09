@@ -19,6 +19,13 @@ imap bd<cr> Bussi,<cr> - Darsha
 nnoremap <F5> "=strftime("%FT%T%z")<CR>P
 inoremap <F5> <C-R>=strftime("%FT%T%z")<CR>
 
+" see: http://chewett.co.uk/128/show-trailing-whitespace-in-vim/
+hi SpecialKey ctermfg=Red
+" see: http://chewett.co.uk/128/show-trailing-whitespace-in-vim/
+set list
+" http://www.w3schools.com/charsets/ref_utf_geometric.asp
+set listchars=precedes:«,extends:»,tab:»·,trail:■
+
 "# latex-suite settings ####################
 set grepprg=grep\ -nH\ $*
 filetype indent on
