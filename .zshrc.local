@@ -5,6 +5,7 @@ SAVEHIST=100000
 DEBEMAIL=dpat@syn-net.org
 LC_TIME=en_US.UTF-8
 LC_ALL=en_US.UTF-8
+PROJECTDIR=$(print -lr ~/[pP]rojects)
 
 [ -e /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 
@@ -17,7 +18,11 @@ alias push="git push origin master"
 alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
-alias synpro="cd ~/[pP]rojects/synpro"
+
+
+hash -d synpro=${PROJECTDIR}/synpro
+hash -d synnet=${PROJECTDIR}/synnet
+hash -d proj=${PROJECTDIR}
 # http://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
 # alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 # http://askubuntu.com/a/95911
