@@ -17,6 +17,7 @@ alias push="git push origin master"
 alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
+alias dus='du -cs * | sort -n'
 
 if [ -d ~/[pP]rojects ]; then
   PROJECTDIR=$(print -lr ~/[pP]rojects)
