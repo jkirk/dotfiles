@@ -8,6 +8,11 @@ LC_ALL=en_US.UTF-8
 
 [ -e /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 
+# If a new command line being added to the history list duplicates an older
+# one, the older command is NOT removed from the list
+# OVERRIDE setting of .zshrc
+unsetopt histignorealldups
+
 alias o="/usr/bin/gnome-open"
 alias d="dirs -v"
 alias odt2pdf="libreoffice --headless --convert-to pdf"
