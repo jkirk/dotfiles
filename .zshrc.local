@@ -24,7 +24,7 @@ alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
 alias dus='du -cs * | sort -n'
 
-if [ -d ~/[pP]rojects ]; then
+if [ -d ~/projects ] || [ -d ~/Projects ]; then
   PROJECTDIR=$(print -lr ~/[pP]rojects)
   hash -d synpro=${PROJECTDIR}/synpro
   hash -d synnet=${PROJECTDIR}/synnet
