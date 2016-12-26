@@ -96,9 +96,10 @@ function youtube2mp3() {
 
 function qrdisplay() {
 	if [[ -z $1 ]]; then
-			return 1
+		echo $(xclip -o) | qrencode -o - | display
+	else
+		qrencode "$1" -o - | display
 	fi
-	qrencode "$1" -o - | display
 }
 
 if [ -e ${HOME}/projects/scripts/todo.sh ]; then
