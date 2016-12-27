@@ -12,7 +12,6 @@ ui text
 # realname "Darshaka Pathirana"
 email "dpat@syn-net.org"
 # Disable fallback mode by commenting out the following:
-no-cc
 header "X-Debbugs-CC: dpat@syn-net.org"
 smtphost reportbug.debian.org
 # You can add other settings after this line.  See
