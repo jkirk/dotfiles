@@ -1,10 +1,12 @@
 GPG_TTY='tty'
 export GPG_TTY
 
-SAVEHIST=100000
+SAVEHIST=10000
+HISTSIZE=10000
 DEBEMAIL=dpat@syn-net.org
-LC_TIME=en_US.UTF-8
-LC_ALL=en_US.UTF-8
+
+export LC_TIME=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 [ -e /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
 
