@@ -24,7 +24,6 @@ alias push="git push origin master"
 alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
-alias dus='du -cs * | sort -n'
 
 if [ -d ~/projects ] || [ -d ~/Projects ]; then
   PROJECTDIR=$(print -lr ~/[pP]rojects)
@@ -36,6 +35,15 @@ fi
 # alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 # http://askubuntu.com/a/95911
 alias myip2="wget http://ipinfo.io/ip -qO -"
+
+# sorted disk usage
+function dus(){
+  if [ -z ${1} ]; then
+    sudo du -cs * | sort -n
+  else
+    sudo du -cs "$@" | sort -n
+  fi
+}
 
 # https://twitter.com/climagic/status/551435572490010624
 function mirror(){ mplayer -vf mirror -v tv:// -tv device=/dev/video0:driver=v4l2; }
