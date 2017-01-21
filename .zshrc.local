@@ -117,14 +117,11 @@ if [ -n "${PROJECTDIR}" ]; then
   hash -d synnet=${PROJECTDIR}/synnet
   hash -d proj=${PROJECTDIR}
 
-  if [ -e ${PROJECTDIR}/scripts/todo.sh ]; then
-    alias t="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
+  if [ -e "${PROJECTDIR}/scripts/todo.sh" ] && [ -e "${HOME}/.todo/todo.cfg" ]; then
+    function t(){ "${PROJECTDIR}/scripts/todo.sh" -d "${HOME}/.todo/todo.cfg" $@; }
     alias tmm="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
     alias tmu="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +music"
     alias tmo="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +movies"
-  fi
-
-  if [ -e ${PROJECTDIR}/scripts/todo.sh ]; then
     t list
   fi
 fi
