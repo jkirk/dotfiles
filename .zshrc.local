@@ -25,12 +25,12 @@ alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
 
-if [ -d ~/projects ] || [ -d ~/Projects ]; then
-  PROJECTDIR=$(print -lr ~/[pP]rojects)
-  hash -d synpro=${PROJECTDIR}/synpro
-  hash -d synnet=${PROJECTDIR}/synnet
-  hash -d proj=${PROJECTDIR}
+if [ -d ~/projects ]; then
+  PROJECTDIR=$(print -lr ~/projects)
+elif [ -d ~/Projects ]; then
+  PROJECTDIR=$(print -lr ~/Projects)
 fi
+
 # http://www.cyberciti.biz/faq/how-to-find-my-public-ip-address-from-command-line-on-a-linux/
 # alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 # http://askubuntu.com/a/95911
@@ -82,7 +82,7 @@ function git_diff_wrapper() {
 }	
 
 function dont_sleep() {
-	if [[ $1 == "on" ]]; then 
+	if [[ $1 == "on" ]]; then
 		gsettings set org.gnome.desktop.session idle-delay 0
 		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-ac 0
 		gsettings set org.gnome.settings-daemon.plugins.power sleep-display-battery 0
@@ -112,16 +112,22 @@ function qrdisplay() {
 	fi
 }
 
-if [ -e ${HOME}/projects/scripts/todo.sh ]; then
-	alias t="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
-	alias tmm="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
-	alias tmu="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +music"
-	alias tmo="${HOME}/projects/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +movies"
+if [ -n "${PROJECTDIR}" ]; then
+  hash -d synpro=${PROJECTDIR}/synpro
+  hash -d synnet=${PROJECTDIR}/synnet
+  hash -d proj=${PROJECTDIR}
+
+  if [ -e ${PROJECTDIR}/scripts/todo.sh ]; then
+    alias t="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo.cfg"
+    alias tmm="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
+    alias tmu="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +music"
+    alias tmo="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +movies"
+  fi
+
+  if [ -e ${PROJECTDIR}/scripts/todo.sh ]; then
+    t list
+  fi
 fi
 
-if [ -e ${HOME}/projects/scripts/todo.sh ]; then
-	t list
-fi
-
-# vim:ts=4: 
+# vim:ts=4:
 #
