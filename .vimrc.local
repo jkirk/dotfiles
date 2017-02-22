@@ -13,7 +13,8 @@ set expandtab
 imap mfg<cr> Mit freundlichen Grüßen,<cr> - D. Pathirana
 imap lgd<cr> Liebe Grüße,<cr> - Darsha
 imap bd<cr> Bussi,<cr> - Darsha
-imap jst<cr> <C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr>
+imap jst<cr> <C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* Why? <cr>* What? <cr>* How:<cr><esc>kkk$a
+imap jstm<cr> <C-R>=strftime("%F")<cr> [dpat/mika]<cr>----------------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* Why? <cr>* What? <cr>* How:<cr><esc>kkk$a
 
 " insert current datestamp in ISO8601/W3C format
 " see: http://vim.wikia.com/wiki/Insert_current_date_or_time
