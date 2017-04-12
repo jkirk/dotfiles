@@ -9,6 +9,10 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+" use tags
+" see: http://guckes.net/talks/vim/vim_advanced.html
+set tags=~/.vim/mytags
+
 " shortcuts
 imap mfg<cr> Mit freundlichen Grüßen,<cr> - D. Pathirana
 imap lgd<cr> Liebe Grüße,<cr> - Darsha
