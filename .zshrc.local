@@ -3,7 +3,7 @@ export GPG_TTY
 
 SAVEHIST=10000
 HISTSIZE=10000
-DEBEMAIL=dpat@syn-net.org
+export DEBEMAIL=dpat@syn-net.org
 
 export LC_TIME=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
