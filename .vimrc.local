@@ -14,6 +14,17 @@ set expandtab
 set tags=~/.vim/mytags
 
 " shortcuts
+" copy filename to clipboard
+" see: http://vim.wikia.com/wiki/VimTip600
+" copy filename to unnamed buffer
+nmap ,cf :let @"=expand("%")<CR>
+" copy path of filename to unnamed buffer
+nmap ,cp :let @"=expand("%:p:h")<CR>
+" copy full filepath of filename to unnamed buffer
+nmap ,cfp :let @"=expand("%:p")<CR>
+" INFO: to paste the unnamed buffer to vim command line hit Ctrl-R "
+" See: https://stackoverflow.com/a/3997110
+
 imap mfg<cr> Mit freundlichen Grüßen,<cr> - D. Pathirana
 imap lgd<cr> Liebe Grüße,<cr> - Darsha
 imap bd<cr> Bussi,<cr> - Darsha
