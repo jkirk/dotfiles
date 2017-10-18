@@ -126,5 +126,13 @@ if [ -n "${PROJECTDIR}" ]; then
   fi
 fi
 
+# host completion
+[[ -r ~/.ssh/known_hosts_rfid ]] && _my_ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts_rfid)"}:#[\|]*}%%\ *}%%,*}) || _my_ssh_hosts=()
+hosts=(
+    "$hosts[@]"
+    "$_my_ssh_hosts[@]"
+)
+zstyle ':completion:*:hosts' hosts $hosts
+
 # vim:ts=4:
 #
