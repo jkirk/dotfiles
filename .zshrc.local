@@ -24,6 +24,7 @@ alias push="git push origin master"
 alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
+alias git='noglob git' # prevent 'git show HEAD^' causing errors
 
 if [ -d ~/projects ]; then
   PROJECTDIR=$(print -lr ~/projects)
