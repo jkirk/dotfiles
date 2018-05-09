@@ -128,10 +128,26 @@ if [ -n "${PROJECTDIR}" ]; then
 fi
 
 # host completion
-[[ -r ~/.ssh/known_hosts_rfid ]] && _my_ssh_hosts=(${${${${(f)"$(<$HOME/.ssh/known_hosts_rfid)"}:#[\|]*}%%\ *}%%,*}) || _my_ssh_hosts=()
+if is42 ; then
+    [[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
+    # customized:
+    if ls ~/.ssh/known_hosts_* >/dev/null 2>&1 ; then
+      for file in ~/.ssh/known_hosts_* ; _ssh_hosts=($_ssh_hosts ${${${${(f)"$(<$file)"}:#[\|]*}%%\ *}%%,*})
+    else
+      _ssh_hosts=()
+    fi
+    [[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
+else
+    _ssh_config_hosts=()
+    _ssh_hosts=()
+    _etc_hosts=()
+fi
 hosts=(
-    "$hosts[@]"
-    "$_my_ssh_hosts[@]"
+    $(hostname)
+    "$_ssh_config_hosts[@]"
+    "$_ssh_hosts[@]"
+    "$_etc_hosts[@]"
+    localhost
 )
 zstyle ':completion:*:hosts' hosts $hosts
 
