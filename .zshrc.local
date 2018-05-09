@@ -123,7 +123,7 @@ if [ -n "${PROJECTDIR}" ]; then
     alias tmm="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg"
     alias tmu="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +music"
     alias tmo="${PROJECTDIR}/scripts/todo.sh -d ${HOME}/.todo/todo_music-movies.cfg list +movies"
-    t list
+    # t list
   fi
 fi
 
