@@ -28,7 +28,7 @@ nmap ,cfp :let @"=expand("%:p")<CR>
 imap mfg<cr> Mit freundlichen Grüßen,<cr> - D. Pathirana
 imap lgd<cr> Liebe Grüße,<cr> - Darsha
 imap bd<cr> Bussi,<cr> - Darsha
-imap jst<cr> <C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>**Why**<cr><cr>**What**<cr><cr>**How**<cr><esc>kkk$a
+imap jst<cr> .. _<C-R>=strftime("%Y%m%d")<cr>-dpat:<cr><cr><C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>**Why**<cr><cr>**What**<cr><cr>**How**<cr><esc>kkk$a
 imap jstm<cr> <C-R>=strftime("%F")<cr> [dpat/mika]<cr>----------------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* Why? <cr>* What? <cr>* How:<cr><esc>kkk$a
 
 " remove '=' from valid filename to be able to jump to files in ansible
