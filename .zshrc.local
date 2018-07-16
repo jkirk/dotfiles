@@ -132,11 +132,13 @@ fi
 if is42 ; then
     [[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
     # customized:
+    setopt +o nomatch
     if ls ~/.ssh/known_hosts_* >/dev/null 2>&1 ; then
       for file in ~/.ssh/known_hosts_* ; _ssh_hosts=($_ssh_hosts ${${${${(f)"$(<$file)"}:#[\|]*}%%\ *}%%,*})
     else
       _ssh_hosts=()
     fi
+    unsetopt +o nomatch
     [[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
 else
     _ssh_config_hosts=()
