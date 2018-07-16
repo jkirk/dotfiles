@@ -15,7 +15,8 @@ export LC_ALL=en_US.UTF-8
 # OVERRIDE setting of .zshrc
 unsetopt histignorealldups
 
-alias o="/usr/bin/gnome-open"
+[ -x "/usr/bin/gnome-open" ] && alias o="/usr/bin/gnome-open"
+[ -x "/usr/bin/xdg-open" ] && alias o="/usr/bin/xdg-open"
 alias d="dirs -v"
 alias odt2pdf="libreoffice --headless --convert-to pdf"
 alias cdp2s="cd ~/Projects/spc/avl/AVL\ WBT\ Processes2Success/"
