@@ -14,5 +14,5 @@
 # [pager]
 # 	diff =
 [alias]
-	ci = commit
+	ci = commit -v
 	co = checkout
