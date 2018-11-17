@@ -13,3 +13,6 @@
 
 # [pager]
 # 	diff =
+[alias]
+	ci = commit
+	co = checkout
