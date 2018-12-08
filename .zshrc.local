@@ -29,6 +29,14 @@ alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
 alias git='noglob git' # prevent 'git show HEAD^' causing errors
+alias lsshot="command ls -rtlh ~/Pictures/screenshots/*(D.om[1,10])"
+alias cpshot="command cp ~/Pictures/screenshots/*(D.om[1]) ."
+
+# press "ctrl-x d" to insert the actual date in the form yyyy-mm-dd
+function insert-datestamp2 () { LBUFFER+=${(%):-'%D{%Y%m%d}'}; }
+zle -N insert-datestamp2
+
+bind2maps emacs viins       -- -s '^xD' insert-datestamp2
 
 if [ -d ~/projects ]; then
   PROJECTDIR=$(print -lr ~/projects)
