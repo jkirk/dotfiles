@@ -47,7 +47,8 @@ fi
 # http://askubuntu.com/a/95911
 alias myip2="wget http://ipinfo.io/ip -qO -"
 
-# sorted disk usage function dus(){
+# sorted disk usage
+function dus(){
   if [ -z ${1} ]; then
     sudo du -cs * | sort -n
   else
