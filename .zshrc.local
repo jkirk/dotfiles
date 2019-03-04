@@ -47,8 +47,7 @@ fi
 # http://askubuntu.com/a/95911
 alias myip2="wget http://ipinfo.io/ip -qO -"
 
-# sorted disk usage
-function dus(){
+# sorted disk usage function dus(){
   if [ -z ${1} ]; then
     sudo du -cs * | sort -n
   else
@@ -121,6 +120,16 @@ function qrdisplay() {
 	else
 		qrencode "$1" -o - | display
 	fi
+}
+
+# https://coderwall.com/p/_s_xda/fix-ssh-agent-in-reattached-tmux-session-shells
+fixssh() {
+	for key in SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT; do
+		if (tmux show-environment | grep "^${key}" > /dev/null); then
+			value=`tmux show-environment | grep "^${key}" | sed -e "s/^[A-Z_]*=//"`
+			export ${key}="${value}"
+		fi
+	done
 }
 
 if [ -n "${PROJECTDIR}" ]; then
