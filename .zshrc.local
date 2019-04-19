@@ -29,6 +29,9 @@ alias gplog="git log @{1}..HEAD"
 alias git='noglob git' # prevent 'git show HEAD^' causing errors
 alias lsshot="command ls -rtlh ~/Pictures/screenshots/*(D.om[1,10])"
 alias cpshot="command cp ~/Pictures/screenshots/*(D.om[1]) ."
+# copy and paste to clipboard, see: https://superuser.com/a/288333 (Tipp by Ulrich Dangel)
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
 
 # press "ctrl-x d" to insert the actual date in the form yyyy-mm-dd
 function insert-datestamp2 () { LBUFFER+=${(%):-'%D{%Y%m%d}'}; }
