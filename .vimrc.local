@@ -9,6 +9,10 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+" Highlight the screen column of the cursor
+" see: https://t.co/YE94dFuTLE
+au BufEnter *.yaml,*.yml,*.yaml.j2,*.yml.j2 set cursorcolumn
+
 " use tags
 " see: http://guckes.net/talks/vim/vim_advanced.html
 set tags=~/.vim/mytags
