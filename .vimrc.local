@@ -17,6 +17,10 @@ au BufEnter *.yaml,*.yml,*.yaml.j2,*.yml.j2 set cursorcolumn
 " see: http://guckes.net/talks/vim/vim_advanced.html
 set tags=~/.vim/mytags
 
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+" https://stackoverflow.com/a/7078429
+cmap w!! w !sudo tee > /dev/null %
+
 " shortcuts
 " copy filename to clipboard
 " see: http://vim.wikia.com/wiki/VimTip600
