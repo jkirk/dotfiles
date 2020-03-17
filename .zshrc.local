@@ -22,6 +22,7 @@ unsetopt histignorealldups
 [ -x "/usr/bin/gnome-open" ] && alias o="/usr/bin/gnome-open"
 [ -x "/usr/bin/xdg-open" ] && alias o="/usr/bin/xdg-open"
 alias d="dirs -v"
+alias cdgitroot='cd $(git rev-parse --show-toplevel)'
 alias odt2pdf="libreoffice --headless --convert-to pdf"
 alias cdp2s="cd ~/Projects/spc/avl/AVL\ WBT\ Processes2Success/"
 alias pull="git pull --rebase origin master"
@@ -32,6 +33,16 @@ alias gplog="git log @{1}..HEAD"
 alias git='noglob git' # prevent 'git show HEAD^' causing errors
 alias lsshot="command ls -rtlh ~/Pictures/screenshots/*(D.om[1,10])"
 alias cpshot="command cp ~/Pictures/screenshots/*(D.om[1]) ."
+alias ls='command ls --color=auto'
+
+zstyle ':prompt:grml:right:setup' use-rprompt false
+
+# In .zshrc we have an array called abk where some shortcuts are defined which can be
+# expanded by pressing 'CTRL-x .' On how to expand an item to an array, see: https://stackoverflow.com/a/37391847
+
+abk+=("SC" "~/Pictures/screenshots/*(D.om[1])") # show last modified file in that dir (= last taken screenshot)
+abk+=("TRIM" "| awk '{ \$1=\$1; print }'" ) # trim leading and trailing whitespace of an output, see: https://unix.stackexchange.com/a/205854
+
 # copy and paste to clipboard, see: https://superuser.com/a/288333 (Tipp by Ulrich Dangel)
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
@@ -96,7 +107,7 @@ function qget() {
 
 function git_diff_wrapper() {
 	vimdiff "$2" "$5"
-}	
+}
 
 function dont_sleep() {
 	if [[ $1 == "on" ]]; then
