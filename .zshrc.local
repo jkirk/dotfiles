@@ -35,11 +35,13 @@ alias lsshot="command ls -rtlh ~/Pictures/screenshots/*(D.om[1,10])"
 alias cpshot="command cp ~/Pictures/screenshots/*(D.om[1]) ."
 alias ls='command ls --color=auto'
 
+# Disabled unhappy smiley:
 zstyle ':prompt:grml:right:setup' use-rprompt false
 
 # In .zshrc we have an array called abk where some shortcuts are defined which can be
 # expanded by pressing 'CTRL-x .' On how to expand an item to an array, see: https://stackoverflow.com/a/37391847
 
+abk+=("shot" "~/Pictures/screenshots/screenshot_") # expand to screenshots
 abk+=("SC" "~/Pictures/screenshots/*(D.om[1])") # show last modified file in that dir (= last taken screenshot)
 abk+=("TRIM" "| awk '{ \$1=\$1; print }'" ) # trim leading and trailing whitespace of an output, see: https://unix.stackexchange.com/a/205854
 
@@ -47,10 +49,9 @@ abk+=("TRIM" "| awk '{ \$1=\$1; print }'" ) # trim leading and trailing whitespa
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 
-# press "ctrl-x d" to insert the actual date in the form yyyy-mm-dd
+# press "ctrl-x D" to insert the actual date in the form yyyymmdd
 function insert-datestamp2 () { LBUFFER+=${(%):-'%D{%Y%m%d}'}; }
 zle -N insert-datestamp2
-
 bind2maps emacs viins       -- -s '^xD' insert-datestamp2
 
 if [ -d ~/projects ]; then
