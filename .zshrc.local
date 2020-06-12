@@ -106,6 +106,12 @@ function qget() {
     wget -c -U "QuickTime/7.6.2" $1
 }
 
+
+# Poor mans Humble Book Bundle downloader: Use the saved html file as parameter and alls PDFs and epubs will be downloaded
+function humbleget() {
+    grep -e epub -e pdf "$1" | sed -e 's/^.*href="\(.*\)".*/\1/' | recode html..ascii | aria2c -i -
+}
+
 function git_diff_wrapper() {
 	vimdiff "$2" "$5"
 }
