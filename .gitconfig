@@ -14,3 +14,13 @@
 	ci = commit -v
 	co = checkout
 	st = status
+
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false
+[diff]
+	noprefix = true
+[log]
+	abbrevCommit = true
