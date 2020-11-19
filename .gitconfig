@@ -2,17 +2,14 @@
 	name = Darshaka Pathirana
 	email = dpat@syn-net.org
 
+[diff "ods"]
+	binary = true
+	command = pyexcel-wrapper
+
 [diff "odf"]
 	binary = true
 	textconv = odt2txt
 
-# https://technotales.wordpress.com/2009/05/17/git-diff-with-vimdiff/
-
-# [diff]
-	#external = git_diff_wrapper
-
-# [pager]
-# 	diff =
 [alias]
 	ci = commit -v
 	co = checkout
