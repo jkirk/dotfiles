@@ -1,0 +1,6 @@
+[git_commit]
+only_detached = false
+
+[time]
+disabled = false
+time_format = "%F %T %Z"
