@@ -31,8 +31,8 @@ alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
 alias git='noglob git' # prevent 'git show HEAD^' causing errors
-alias lsshot="command ls -rtlh ~/Pictures/screenshots/*(D.om[1,10])"
-alias cpshot="command cp ~/Pictures/screenshots/*(D.om[1]) ."
+function lsshot() { command ls --color=auto -rtlh ~/Pictures/screenshots/*(D.om[1,${1:-10}]) }
+function cpshot() { command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) . }
 alias ls='command ls --color=auto'
 
 # Disabled unhappy smiley:
