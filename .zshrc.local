@@ -114,14 +114,20 @@ function qget() {
     wget -c -U "QuickTime/7.6.2" $1
 }
 
-
 # Poor mans Humble Book Bundle downloader: Use the saved html file as parameter and alls PDFs and epubs will be downloaded
 function humbleget() {
     grep -e epub -e pdf "$1" | sed -e 's/^.*href="\(.*\)".*/\1/' | recode html..ascii | aria2c -i -
 }
 
-function git_diff_wrapper() {
-	vimdiff "$2" "$5"
+# git help functions
+#
+# Review git history via vim
+function glog () {
+  noglob git log -p -40 $1 | vim - -R -c 'set foldmethod=syntax'
+}
+
+function pyexcel-wrapper() {
+	pyexcel diff "$2" "$5"
 }
 
 function dont_sleep() {
@@ -178,6 +184,10 @@ if [ -n "${PROJECTDIR}" ]; then
     # t list
   fi
 fi
+
+# export GEM_HOME=$HOME/.local/share/gem
+# export GEM_PATH=$GEM_HOME
+# export PATH=$PATH":$GEM_HOME"
 
 # host completion
 if is42 ; then
