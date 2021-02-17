@@ -9,6 +9,13 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+set ignorecase
+set smartcase
+
+" since the update to debian/buster shiftwidht is set to 3 on rst files
+" no idea why
+autocmd FileType rst set shiftwidth=2
+
 " Highlight the screen column of the cursor
 " see: https://t.co/YE94dFuTLE
 au BufEnter *.yaml,*.yml,*.yaml.j2,*.yml.j2 set cursorcolumn
@@ -37,22 +44,30 @@ nmap ,cfp :let @"=expand("%:p")<CR>
 nmap ,cbp :set nopaste<cr>i.. code-block:: console<cr><esc>"*p<S-v>']>']j
 nmap ,bp :set nopaste<cr>"*p<S-v>']>']j
 
+imap plc<cr> [...]<cr>PLAY RECAP<cr>
 imap mfg<cr> Mit freundlichen Grüßen,<cr> - Darshaka Pathirana
 imap lgd<cr> Liebe Grüße,<cr> - Darsha
 imap bd<cr> Bussi,<cr> - Darsha
+imap jss<cr> .. _<C-R>=strftime("%Y%m%d")<cr>:<cr><cr><C-R>=strftime("%F")<cr><cr>----------<cr><cr>TOPIC<cr>~~~~~<cr><esc>kka
 imap jst<cr> .. _<C-R>=strftime("%Y%m%d")<cr>_dpat:<cr><cr><C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* **Why?**:<cr><C-W>* **What?**:<cr><C-W>* **How?**:<esc>kka
+imap dst<cr> .. _<C-R>=strftime("%Y%m%d")<cr>:<cr><cr><C-R>=strftime("%F")<cr><cr>----------<cr><cr>
 imap wwh<cr> * **Why?**:<cr><C-W>* **What?**:<cr><C-W>* **How?**:<esc>kka
-imap jstm<cr> <C-R>=strftime("%F")<cr> [dpat/mika]<cr>----------------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* Why? <cr>* What? <cr>* How:<cr><esc>kkk$a
 imap cbc<cr> .. code-block:: console<cr>
 
 " remove '=' from valid filename to be able to jump to files in ansible
 " playbooks
 set isfname=@,48-57,/,.,-,_,+,,,#,$,%,~
 
+" Voom
+" remap tab to CTRL-Tab, because tab should jump to newer jump position
+let g:voom_tab_key = "<C-Tab>"
+
 " insert current datestamp in ISO8601/W3C format
 " see: http://vim.wikia.com/wiki/Insert_current_date_or_time
 inoremap d<F2> <C-R>=strftime('%F')<CR>
+inoremap <C-x>d <C-R>=strftime('%F')<CR>
 inoremap D<F2> <C-R>=strftime('%Y%m%d')<CR>
+inoremap <C-x>D <C-R>=strftime('%Y%m%d')<CR>
 inoremap d<F3> <C-R>=strftime('%T')<CR>
 inoremap d<F4> <C-R>=strftime("%FT%T%z")<CR>
 nnoremap <F4> "=strftime("%FT%T%z")<CR>P
