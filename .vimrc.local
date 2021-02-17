@@ -1,4 +1,5 @@
 "# general settings ####################
+
 filetype plugin on
 set incsearch
 set hlsearch
@@ -11,6 +12,7 @@ set expandtab
 
 set ignorecase
 set smartcase
+set background=dark
 
 " since the update to debian/buster shiftwidht is set to 3 on rst files
 " no idea why
