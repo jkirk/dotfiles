@@ -65,6 +65,14 @@ fi
 # http://askubuntu.com/a/95911
 alias myip2="wget http://ipinfo.io/ip -qO -"
 
+function synpro-prompt() {
+  if ! grml_theme_has_token greendatetime; then
+    grml_theme_add_token greendatetime '%D{%Y-%m-%d} %D{%H:%M:%S %Z} ' '%F{green}' ''
+  fi
+  zstyle ':prompt:grml:left:setup' items rc greendatetime change-root user at host path percent vcs
+  zstyle ':prompt:grml:right:setup' items history sad-smiley
+}
+
 # sorted disk usage
 function dus(){
   if [ -z ${1} ]; then
