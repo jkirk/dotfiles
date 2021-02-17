@@ -36,7 +36,7 @@ alias cpshot="command cp ~/Pictures/screenshots/*(D.om[1]) ."
 alias ls='command ls --color=auto'
 
 # Disabled unhappy smiley:
-zstyle ':prompt:grml:right:setup' use-rprompt false
+# zstyle ':prompt:grml:right:setup' use-rprompt false
 
 # In .zshrc we have an array called abk where some shortcuts are defined which can be
 # expanded by pressing 'CTRL-x .' On how to expand an item to an array, see: https://stackoverflow.com/a/37391847
