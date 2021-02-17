@@ -1,6 +1,18 @@
+[directory]
+truncate_to_repo = false
+truncation_length = 5
+truncation_symbol = "../"
+
 [git_commit]
 only_detached = false
 
 [time]
 disabled = false
 time_format = "%F %T %Z"
+
+[username]
+# The module will be shown if any of the following conditions are met:
+#     The current user is root
+#     The current user isn't the same as the one that is logged in
+#     The user is currently connected as an SSH session
+#     The variable show_always is set to true
