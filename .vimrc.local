@@ -13,6 +13,7 @@ set expandtab
 set ignorecase
 set smartcase
 set background=dark
+set modeline
 
 " since the update to debian/buster shiftwidht is set to 3 on rst files
 " no idea why
