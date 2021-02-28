@@ -24,8 +24,8 @@ data.location=~/.task
 #include /usr/share/taskwarrior/dark-violets-256.theme
 #include /usr/share/taskwarrior/dark-yellow-green.theme
 #include /usr/share/taskwarrior/dark-gray-256.theme
-#include /usr/share/taskwarrior/dark-gray-blue-256.theme
-#include /usr/share/taskwarrior/solarized-dark-256.theme
+include /usr/share/taskwarrior/dark-gray-blue-256.theme
+# -> include /usr/share/taskwarrior/solarized-dark-256.theme
 #include /usr/share/taskwarrior/solarized-light-256.theme
 #include /usr/share/taskwarrior/no-color.theme
 
@@ -35,4 +35,18 @@ report._reviewed.description=Tasksh review report.  Adjust the filter to your ne
 report._reviewed.columns=uuid
 report._reviewed.sort=reviewed+,modified+
 report._reviewed.filter=( reviewed.none: or reviewed.before:now-1week ) and ( +PENDING or +WAITING )
-color.blocking=color245 on color15
+# color.blocking=white
+urgency.user.tag.steffi.coefficient=3
+urgency.user.tag.mika.coefficient=3
+urgency.user.tag.now.coefficient=7
+
+report.next10.columns=id,start.age,entry.age,depends,priority,project,tags,recur,scheduled.countdown,due.relative,until.remaining,description,urgency
+report.next10.description=Most urgent tasks
+report.next10.filter=status:pending limit:10
+report.next10.labels=ID,Active,Age,Deps,P,Project,Tag,Recur,S,Due,Until,Description,Urg
+report.next10.sort=urgency-
+context.home=project.has:private or project:linux-desktop
+context.work=project.has:sn or project.has:sp
+context.als=proj:sp.als
+context.waldrapp=proj:sn.waldrapp
+context.lw=proj:lw
