@@ -24,3 +24,5 @@
 	noprefix = true
 [log]
 	abbrevCommit = true
+[pull]
+	rebase = false
