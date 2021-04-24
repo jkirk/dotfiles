@@ -85,6 +85,13 @@ set list
 " http://www.w3schools.com/charsets/ref_utf_geometric.asp
 set listchars=precedes:«,extends:»,tab:»·,trail:■
 
+" In Vim 8.1.0271 and above incsearch is also enabled for substitute
+" To revert that behavior the following lines are needes
+"
+" See: https://github.com/vim/vim/commit/b0acacd767a2b0618a7f3c08087708f4329580d0#commitcomment-30069870
+au CmdLineEnter : let s:incs = &incsearch | set noincsearch
+au CmdLineLeave : let &incsearch = s:incs
+
 "# latex-suite settings ####################
 set grepprg=grep\ -nH\ $*
 filetype indent on
