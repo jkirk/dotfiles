@@ -1,0 +1,15 @@
+[% topic=input('Topic? ') -%]
+[% why=input('Why? ') -%]
+[% what=input('What? ') -%]
+.. _[% date('%Y%m%d') %]_[% user.nickname %]
+
+[% date('%Y-%m-%d') %] [[% user.nickname %]]
+-----------------
+
+[% topic %]
+[% FILTER repeat(topic.length) %]~[% END %]
+
+* **Why?**: [% why %]
+* **What?**: [% what %]
+* **How?**:
+* **Conclusion**:
