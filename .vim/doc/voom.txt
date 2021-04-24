@@ -1,1 +1,0 @@
-/usr/share/vim-voom/doc/voom.txt
