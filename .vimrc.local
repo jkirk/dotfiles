@@ -43,7 +43,9 @@ nmap ,cfp :let @"=expand("%:p")<CR>
 " INFO: to paste the unnamed buffer to vim command line hit Ctrl-R "
 " See: https://stackoverflow.com/a/3997110
 
-" paste clipboard buffer as idented code-block (rst syntax)
+" paste PRIMARY x-clipboard buffer
+nmap ,p "*p
+" paste PRIMARY x-clipboard buffer as indented code-block (rst syntax)
 nmap ,cbp :set nopaste<cr>i.. code-block:: console<cr><esc>"*p<S-v>']>']j
 nmap ,bp :set nopaste<cr>"*p<S-v>']>']j
 
