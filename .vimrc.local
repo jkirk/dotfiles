@@ -55,11 +55,11 @@ imap plc<cr> [...]<cr>PLAY RECAP<cr>
 imap mfg<cr> Mit freundlichen Grüßen,<cr> - Darshaka Pathirana
 imap lgd<cr> Liebe Grüße,<cr> - Darsha
 imap bd<cr> Bussi,<cr> - Darsha
-imap jss<cr> .. _<C-R>=strftime("%Y%m%d")<cr>:<cr><cr><C-R>=strftime("%F")<cr><cr>----------<cr><cr>TOPIC<cr>~~~~~<cr><esc>kka
-imap jst<cr> .. _<C-R>=strftime("%Y%m%d")<cr>_dpat:<cr><cr><C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* **Why?**:<cr><C-W>* **What?**:<cr><C-W>* **How?**:<esc>kka
+imap jst<cr> .. _<C-R>=strftime("%Y%m%d")<cr>_dpat:<cr><cr><C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* **Why?**: <cr>* **What?**: <cr>* **How?**:<esc>kkA
 imap dst<cr> .. _<C-R>=strftime("%Y%m%d")<cr>:<cr><cr><C-R>=strftime("%F")<cr><cr>----------<cr><cr>
-imap wwh<cr> * **Why?**:<cr><C-W>* **What?**:<cr><C-W>* **How?**:<esc>kka
+imap wwh<cr> * **Why?**: <cr>* **What?**: <cr>* **How?**: <esc>kkA
 imap cbc<cr> .. code-block:: console<cr>
+imap jstm<cr> <C-R>=strftime("%F")<cr> [dpat/mika]<cr>----------------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* Why? <cr>* What? <cr>* How:<esc>kkA
 
 " remove '=' from valid filename to be able to jump to files in ansible
 " playbooks
