@@ -185,9 +185,9 @@ if [ -n "${PROJECTDIR}" ]; then
   fi
 fi
 
-# export GEM_HOME=$HOME/.local/share/gem
-# export GEM_PATH=$GEM_HOME
-# export PATH=$PATH":$GEM_HOME"
+export GEM_HOME="$HOME/.local/share/gem"
+export GEM_PATH="$GEM_HOME/bin"
+export PATH=$PATH":$GEM_PATH"
 
 # host completion
 if is42 ; then
@@ -214,6 +214,8 @@ hosts=(
     localhost
 )
 zstyle ':completion:*:hosts' hosts $hosts
+
+eval "$(starship init zsh)"
 
 # vim:ts=4:
 #
