@@ -1,0 +1,65 @@
+Firmware Update opnSense firewall hermes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dashboard before update::
+
+
+Firmware updates::
+
+
+Dashboard after update::
+
+Security updates helios
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* **Why?**: Security updates and reboot were pending.
+* **What?**: Update and reboot `helios`
+* **How?**:
+
+Checked pending security updates:
+
+.. code-block:: console
+
+  jkirk@helios ~ % apt list --upgradable
+
+Checked disk space:
+
+.. code-block:: console
+
+  jkirk@helios ~ % df -h
+
+Checked disk usage of LXCE container:
+
+.. code-block:: console
+
+  jkirk@helios ~ % sudo pvesm list local
+
+  jkirk@helios ~ % sudo du -sch /var/lib/vz
+
+Notified Steffi, compuholic, rose about upcoming update + reboot.
+
+Perfomed upgrade:
+
+.. code-block:: console
+
+  jkirk@helios ~ % sudo apt upgrade
+
+Checked running VMs + containers:
+
+.. code-block:: console
+
+  jkirk@helios ~ % sudo qm list
+
+  jkirk@helios ~ % sudo pct list
+
+Rebooted:
+
+.. code-block:: console
+
+  jkirk@helios ~ % uptime
+
+  jkirk@helios ~ % uptime --since
+
+  jkirk@helios ~ % date
+
+  jkirk@helios ~ % sudo reboot
