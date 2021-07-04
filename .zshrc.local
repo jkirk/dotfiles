@@ -215,6 +215,7 @@ hosts=(
 )
 zstyle ':completion:*:hosts' hosts $hosts
 
+prompt restore
 eval "$(starship init zsh)"
 
 # vim:ts=4:
