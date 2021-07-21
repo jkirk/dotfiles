@@ -50,3 +50,6 @@ context.work=project.has:sn or project.has:sp
 context.als=proj:sp.als
 context.waldrapp=proj:sn.waldrapp
 context.lw=proj:lw
+context.notals=proj.not:sp.als
+context.prt=proj:sp.prt
+weekstart=monday
