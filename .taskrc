@@ -60,3 +60,4 @@ context.lw=proj:lw
 context.notals=proj.not:sp.als
 context.prt=proj:sp.prt
 weekstart=monday
+search.case.sensitive=no
