@@ -79,6 +79,16 @@ inoremap d<F3> <C-R>=strftime('%T')<CR>
 inoremap d<F4> <C-R>=strftime("%FT%T%z")<CR>
 nnoremap <F4> "=strftime("%FT%T%z")<CR>P
 
+" quote/unquote words
+" see: https://stackoverflow.com/a/2148221
+nnoremap <Leader>q" ciw""<Esc>P
+nnoremap <Leader>q' ciw''<Esc>P
+nnoremap <Leader>q` ciw``<Esc>P
+" | needs 3 blackslashes
+" and to make unquote work at the end of line we need to set
+" virtualedit+=onemore, see: https://vi.stackexchange.com/a/27270
+nnoremap <Leader>qd :set ve+=onemore<CR>diW"=substitute(@@,"`\\\|'\\\|\"","","g")<CR>P:set ve-=onemore<CR>
+
 " Show trailing whitespace in Vim
 " see: http://chewett.co.uk/128/show-trailing-whitespace-in-vim/
 hi SpecialKey ctermfg=Red
