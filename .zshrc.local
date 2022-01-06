@@ -35,6 +35,7 @@ function lsshot() { command ls --color=auto -rtlh ~/Pictures/screenshots/*(D.om[
 function cpshot() { command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) . }
 alias ls='command ls --color=auto'
 alias sdig='dig +noall +answer'
+alias lstcp='sudo lsof -iTCP -sTCP:LISTEN -n -P'
 
 bindkey "^Xa" _expand_alias
 zstyle ':completion:*' completer _expand_alias _complete _ignored
@@ -49,7 +50,7 @@ function ara_hosts_changed() { ara result list --playbook $1 --limit 100 --resol
 function ara_hosts_failed() { ara result list --playbook $1 --limit 100 --resolve -c id -c host --status failed }
 function ara_tasks_changed() { ara result list --playbook $1 --resolve --changed --status ok -c id -c task -c host }
 function ara_tasks_failed() { ara result list --playbook $1 --limit 100 --resolve --status failed -c id -c task -c host }
-function ara_task_diff() { TASK_ID=$1; diff -u <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].before" -r) <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].after" -r) }
+function ara_task_diff() { TASK_ID=$1; echo "dest: $(ara result show --with-content -f json 242507 | jq ".content.invocation.dest")"; diff -u <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].before" -r) <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].after" -r) }
 function ara_task_contentmsg() { ara result show --with-content -f json $1 | jq .content.msg }
 
 # Disabled unhappy smiley:
