@@ -1,0 +1,37 @@
+[% docreview_start=input('doc-review start date (YYDDMM)? ') -%]
+[% docreview_start_user=input('doc-review start user (mika/dpat)? ') -%]
+[% docreview_end=input('doc-review end date (YYDDMM)? ') -%]
+[% docreview_end_user=input('doc-review end user (mika/dpat)? ') -%]
+.. _[% date('%Y%m%d') %]_docreview:
+
+[% date('%Y-%m-%d') %] [doc-review]
+-----------------------
+
+* Reviewed :ref:`20[% docreview_start %]_[% docreview_start_user %]` - :ref:`_20[% docreview_end %]_[% docreview_end_user %]`
+* Executed ansible playbook site.yml test run in als-ansible:
+
+.. code-block:: console
+
+  % git pull
+  % ansible-playbook -C -D site.yml  # git rev TODO
+
+* (optionally) Analyzed the pending changes + update :issue:`#404: ansible: unexpected changes with site run <404>`:
+
+.. code-block:: console
+
+  ❯ ara_last
+  [...]
+  ❯ ara_tasks_changed $LAST_ID
+  [...]
+
+* Refreshed ansible inventory documentation in als-doc:
+
+.. code-block:: console
+
+  % rm -rf out
+  % ansible -b --limit 'site' -m setup --tree out/ all | tee /tmp/als-ansible-run.log
+  % ansible-cmdb out/ > ansible_inventory.html
+
+  or
+
+  ❯ make ansible-inventory
