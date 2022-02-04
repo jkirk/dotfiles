@@ -15,6 +15,7 @@
 	co = checkout
 	st = status
 	ce = commit -v --reset-author -c
+	last = log --stat -1
 
 [merge]
 	tool = vimdiff
