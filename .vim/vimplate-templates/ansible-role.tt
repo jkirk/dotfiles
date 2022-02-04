@@ -1,0 +1,13 @@
+[% ansible_role=input('Ansible role name: ') -%]
+---
+# Role: [% ansible_role %]
+#
+# Usage:
+#
+#   roles:
+#     - [% ansible_role %]
+#
+# Description:
+#
+
+- name: First task

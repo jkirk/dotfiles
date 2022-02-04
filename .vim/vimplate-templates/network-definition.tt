@@ -1,0 +1,15 @@
+[% fqdn=input('FQDN: ') -%]
+[% ip=input('IP: ') -%]
+[% mac=input('MAC: ') -%]
+[% comment=input('Comment: ') -%]
+Added a new Network Definition:
+
+* Name: [% fqdn %]
+* Type: Host
+* IPv4 address: [% ip %]
+* IPv4 DHCP Internal
+* MAC: [% mac %]
+* DNS Setting
+* Hostname: [% fqdn %]
+* Reverse DNS: yes
+* Comment: [% comment %]
