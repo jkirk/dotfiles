@@ -1,3 +1,8 @@
+.. _[% date('%Y%m%d') %]_[% user.nickname %]:
+
+[% date('%Y-%m-%d') %] [[% user.nickname %]]
+-----------------
+
 Firmware Update opnSense firewall hermes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -38,11 +43,15 @@ Checked disk usage of LXCE container:
 
 Notified Steffi, compuholic, rose about upcoming update + reboot.
 
-Perfomed upgrade:
+Performed upgrade:
 
 .. code-block:: console
 
   jkirk@helios ~ % sudo apt upgrade
+
+  jkirk@helios ~ % sudo apt --purge autoremove
+
+  jkirk@helios ~ % df -h
 
 Checked running VMs + containers:
 
@@ -52,7 +61,7 @@ Checked running VMs + containers:
 
   jkirk@helios ~ % sudo pct list
 
-Rebooted:
+Rebooted + unlocked `helios`:
 
 .. code-block:: console
 
@@ -63,3 +72,11 @@ Rebooted:
   jkirk@helios ~ % date
 
   jkirk@helios ~ % sudo reboot
+
+  ❯ ping 78.46.39.183
+  [...]
+
+  ❯ ssh unlock-helios.syn-net.org
+  Please unlock disk md1crypt:
+  cryptsetup: md1crypt set up successfully
+  Connection to 78.46.39.183 closed.
