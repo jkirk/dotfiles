@@ -1,0 +1,39 @@
+[% subject=input('Subject: ') -%]
+[% messageid=input('Message-ID: ') -%]
+[% username=input('Username: ') -%]
+[% name=input('Full Name: ') -%]
+Add Kopano User Account
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* **Why?**: Dominik asked us to create a kopano/groupware account (see mail `Subject: [% subject %]` + `Message-ID: [% messageid %]`
+
+::
+
+  TODO
+
+* **What?**: Create the kopano user account on `groupware01`
+* **How?**:
+
+Checked mail address:
+
+.. code-block:: console
+
+  synprodpat@mail01 ~ % grep [% username %] /etc/postfix/virtual
+  [...]
+
+Checked for existence of similar username:
+
+.. code-block:: console
+
+  synprodpat@groupware01 ~ % sudo kopano-admin -l | grep TODO
+  1 synprodpat@groupware01 ~ % sudo kopano-admin -l | grep [% username %]
+
+Generated a password via KeepassXC password generator and creaed user:
+
+.. code-block:: console
+
+  synprodpat@groupware01 ~ % sudo kopano-admin -c [% username %] -e [% username %]@allergosan.at -f "[% name %]" -a 0 -P
+
+  synprodpat@groupware01 ~ % sudo kopano-admin --details [% username %]
+
+Shared password via https://transfer.pw service via mail to Dominik.
