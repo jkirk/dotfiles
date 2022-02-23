@@ -21,15 +21,11 @@ Security updates helios
 * **What?**: Update and reboot `helios`
 * **How?**:
 
-Checked pending security updates:
+Checked pending security updates + disk usage:
 
 .. code-block:: console
 
   jkirk@helios ~ % apt list --upgradable
-
-Checked disk space:
-
-.. code-block:: console
 
   jkirk@helios ~ % df -h
 
