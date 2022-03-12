@@ -213,7 +213,7 @@ if is42 ; then
     # customized:
     setopt +o nomatch
     if ls ~/.ssh/known_hosts_* >/dev/null 2>&1 ; then
-      for file in ~/.ssh/known_hosts_* ; _ssh_hosts=($_ssh_hosts ${${${${(f)"$(<$file)"}:#[\|]*}%%\ *}%%,*})
+      for file in ~/.ssh/known_hosts_*~*old ; _ssh_hosts=($_ssh_hosts ${${${${(f)"$(<$file)"}:#[\|]*}%%\ *}%%,*})
     else
       _ssh_hosts=()
     fi
