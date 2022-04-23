@@ -36,6 +36,7 @@ function cpshot() { command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) . }
 alias ls='command ls --color=auto'
 alias sdig='dig +noall +answer'
 alias lstcp='sudo lsof -iTCP -sTCP:LISTEN -n -P'
+alias ___='source ~/.zshrc'
 
 bindkey "^Xa" _expand_alias
 zstyle ':completion:*' completer _expand_alias _complete _ignored
