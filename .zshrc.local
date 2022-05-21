@@ -236,8 +236,10 @@ hosts=(
 )
 zstyle ':completion:*:hosts' hosts $hosts
 
-prompt restore
-eval "$(starship init zsh)"
+if [ -e "/usr/local/bin/starship" ]; then
+  prompt restore
+  eval "$(starship init zsh)"
+fi
 
 [[ -r ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
 [[ -r /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh

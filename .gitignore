@@ -1,5 +1,6 @@
 .vim/spell*
 .vim/Session.vim
 .vim/.netrwhist
+.vim/plugged/ansible-vim
 .ssh/
 **/__pycache__/**
