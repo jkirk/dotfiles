@@ -36,6 +36,8 @@ function cpshot() { command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) . }
 alias ls='command ls --color=auto'
 alias sdig='dig +noall +answer'
 alias lstcp='sudo lsof -iTCP -sTCP:LISTEN -n -P'
+# https://twitter.com/dailyzshtip/status/1524343385716371458
+alias beep='play -q -n synth 0.1 sin 880 >& /dev/null'
 alias ___='source ~/.zshrc'
 
 bindkey "^Xa" _expand_alias
