@@ -15,11 +15,21 @@ set smartcase
 set background=dark
 set modeline
 
+" Enable :mks[ession][!] to write a Vim script that restores the current editing session.
+" see: http://www.guckes.net/talks/vim/vim_advanced.txt
+set viminfo+=n
+
+" dsafasdf
+map <f9> :make<CR>
+map <f8> :Voom rest<CR>
+
 packadd! vimplate
 
-" since the update to debian/buster shiftwidht is set to 3 on rst files
+" since the update to debian/buster shiftwidth is set to 3 on rst files
 " no idea why
-autocmd FileType rst set shiftwidth=2
+" To make the map <f9> run "make html" automatically for rst file, we need to
+" set makeprt
+autocmd FileType rst set shiftwidth=2 makeprg=make\ html
 
 " Highlight the screen column of the cursor
 " see: https://t.co/YE94dFuTLE

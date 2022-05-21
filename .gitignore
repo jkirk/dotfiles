@@ -1,4 +1,5 @@
 .vim/spell*
+.vim/Session.vim
 .vim/.netrwhist
 .ssh/
 **/__pycache__/**
