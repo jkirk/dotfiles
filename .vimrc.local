@@ -122,4 +122,14 @@ let g:BASH_EMAIL        = 'dpat@syn-net.org'
 let g:BASH_MapLeader 	= '<'
 let g:BASH_FormatDate 	= '%F'
 
-" set writebackup          " Keep a backup file
+" vim-plug needs to be enabled
+" See: https://github.com/junegunn/vim-plug/wiki/tutorial
+" Plugins will be downloaded under the specified directory.
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+
+" Declare the list of plugins.
+" shorthand for https://github.com/pearofducks/ansible-vim
+Plug 'pearofducks/ansible-vim'
+
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
