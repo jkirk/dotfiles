@@ -2,7 +2,7 @@
 [% ip=input('IP: ') -%]
 [% mac=input('MAC: ') -%]
 [% comment=input('Comment: ') -%]
-Added a new Network Definition:
+In Sophos -> Definitions & Users -> Network Definitions added a new Network Definition:
 
 * Name: [% fqdn %]
 * Type: Host
