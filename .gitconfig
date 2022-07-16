@@ -16,6 +16,7 @@
 	st = status
 	ce = commit -v --reset-author -c
 	last = log --stat -1
+	slog = log --pretty=one --no-merges --no-decorate
 
 [merge]
 	tool = vimdiff
@@ -26,7 +27,10 @@
 	noprefix = true
 [log]
 	abbrevCommit = true
+	date = iso
 [pull]
 	rebase = false
 [init]
 	defaultBranch = main
+[pretty]
+	changelog = format:%C(yellow)%h%Cblue%x09%an <%ae>%x09%ad%x09%Creset%s
