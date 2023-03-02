@@ -149,7 +149,9 @@ function glog () {
 }
 
 function pyexcel-wrapper() {
-	pyexcel diff "$2" "$5"
+    if type "pyexcel" > /dev/null; then
+        pyexcel diff "$2" "$5"
+    fi
 }
 
 function dont_sleep() {
