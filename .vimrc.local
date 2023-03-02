@@ -19,9 +19,14 @@ set modeline
 " see: http://www.guckes.net/talks/vim/vim_advanced.txt
 set viminfo+=n
 
-" dsafasdf
+" rst mappings:
+" run make
 map <f9> :make!<CR>
+" show Voom rest outline
 map <f8> :Voom rest<CR>
+
+" open file und cursor with xdg-open
+map gfo :!xdg-open <cfile><CR>k
 
 packadd! vimplate
 
