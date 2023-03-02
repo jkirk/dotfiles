@@ -3,7 +3,8 @@
 	email = dpat@syn-net.org
 
 [diff "ods"]
-	binary = true
+	binary = false
+	textconv = "pyexcel view"
 	command = pyexcel-wrapper
 
 [diff "odf"]
@@ -17,6 +18,7 @@
 	ce = commit -v --reset-author -c
 	last = log --stat -1
 	slog = log --pretty=one --no-merges --no-decorate
+	stlog = log --pretty=stlog --no-merges --no-decorate
 
 [merge]
 	tool = vimdiff
@@ -34,3 +36,4 @@
 	defaultBranch = main
 [pretty]
 	changelog = format:%C(yellow)%h%Cblue%x09%an <%ae>%x09%ad%x09%Creset%s
+	stlog = format:%C(yellow)%h%Cblue %ad %Creset%s
