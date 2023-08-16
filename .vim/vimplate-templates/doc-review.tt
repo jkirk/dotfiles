@@ -1,14 +1,13 @@
+[% docreview_customer=input('Customer (lowercase): ') -%]
 [% docreview_start=input('doc-review start date (YYDDMM)? ') -%]
 [% docreview_start_user=input('doc-review start user (mika/dpat)? ') -%]
-[% docreview_end=input('doc-review end date (YYDDMM)? ') -%]
-[% docreview_end_user=input('doc-review end user (mika/dpat)? ') -%]
 .. _[% date('%Y%m%d') %]_docreview:
 
 [% date('%Y-%m-%d') %] [doc-review]
 -----------------------
 
-* Reviewed :ref:`20[% docreview_start %]_[% docreview_start_user %]` - :ref:`_20[% docreview_end %]_[% docreview_end_user %]`
-* Executed ansible playbook site.yml test run in als-ansible:
+* Reviewed :ref:`[% docreview_start %]_[% docreview_start_user %]` - :ref:`20YYDDMM_TODO`
+* Executed ansible playbook site.yml test run in [% docreview_customer %]-ansible:
 
 .. code-block:: console
 
@@ -24,7 +23,7 @@
   ❯ ara_tasks_changed $LAST_ID
   [...]
 
-* Refreshed ansible inventory documentation in als-doc:
+* Refreshed ansible inventory documentation in [% docreview_customer %]-doc:
 
 .. code-block:: console
 
