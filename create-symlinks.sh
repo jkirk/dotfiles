@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 SCRIPT=$(readlink -f "$0")
 CONFDIR=$(dirname "${SCRIPT}")
@@ -8,7 +8,7 @@ for config in "${CONFDIR}"/.* "${CONFDIR}"/.config/*; do
 	HOMEBASE=${HOME}/${BASE}
 	BACKUP="${HOMEBASE}.$(date --rfc-3339=seconds)"
 
-	if [ "${BASE}" == ".git" ] || [ "${BASE}" == ".config" ] || [ "${BASE}" == "." ] || [ "${BASE}" == ".." ]; then
+	if [ "${BASE}" = ".git" ] || [ "${BASE}" = ".config" ] || [ "${BASE}" = "." ] || [ "${BASE}" = ".." ]; then
 		continue
 	fi
 
@@ -18,7 +18,7 @@ for config in "${CONFDIR}"/.* "${CONFDIR}"/.config/*; do
 	fi
 
 	if [ -L "${HOMEBASE}" ]; then
-		if [[ "$1" == "--force" ]]; then
+		if [ "$1" = "--force" ]; then
 			echo "Recreated: ${config} -> ${HOMEBASE}"
 			ln -sf "${config}" "${HOMEBASE}"
 		else
@@ -28,7 +28,7 @@ for config in "${CONFDIR}"/.* "${CONFDIR}"/.config/*; do
 		echo "Created (new): ${config} -> ${HOMEBASE}"
 		ln -s "${config}" "${HOMEBASE}"
 	fi
-	if [ "${BASE}" == ".ssh" ] && [ -d "${BACKUP}" ]; then
+	if [ "${BASE}" = ".ssh" ] && [ -d "${BACKUP}" ]; then
 		echo "Copy content of ${BACKUP} back to ${HOMEBASE}"
 		cp -a "${BACKUP}/." "${HOMEBASE}/."
 	fi
