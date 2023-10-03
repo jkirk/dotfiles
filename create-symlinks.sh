@@ -8,15 +8,16 @@ for config in "${CONFDIR}"/.* "${CONFDIR}"/.config/*; do
 	HOMEBASE=${HOME}/${BASE}
 	BACKUP="${HOMEBASE}.$(date --rfc-3339=seconds)"
 
+	if [ "${BASE}" = ".config" ] && [ ! -e "${HOMEBASE}" ]; then
+		mkdir "${HOMEBASE}"
+	fi
 	if [ "${BASE}" = ".git" ] || [ "${BASE}" = ".config" ] || [ "${BASE}" = "." ] || [ "${BASE}" = ".." ]; then
 		continue
 	fi
-
 	if [ -e "${HOMEBASE}" ] && [ ! -L "${HOMEBASE}" ]; then
 		mv "${HOMEBASE}" "${BACKUP}"
 		echo "Backup of ${HOMEBASE} created -> ${BACKUP}"
 	fi
-
 	if [ -L "${HOMEBASE}" ]; then
 		if [ "$1" = "--force" ]; then
 			echo "Recreated: ${config} -> ${HOMEBASE}"
