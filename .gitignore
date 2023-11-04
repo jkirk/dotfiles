@@ -3,4 +3,5 @@
 .vim/.netrwhist
 .vim/plugged/ansible-vim
 .ssh/
+.config/nnn/.lastd
 **/__pycache__/**
