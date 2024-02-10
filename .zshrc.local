@@ -53,7 +53,7 @@ function ara_hosts_changed() { ara result list --playbook $1 --limit 100 --resol
 function ara_hosts_failed() { ara result list --playbook $1 --limit 100 --resolve -c id -c host --status failed }
 function ara_tasks_changed() { ara result list --playbook $1 --limit 0 --resolve --changed --status ok -c id -c task -c host }
 function ara_tasks_failed() { ara result list --playbook $1 --limit 100 --resolve --status failed -c id -c task -c host }
-function ara_task_diff() { TASK_ID=$1; echo "dest: $(ara result show --with-content -f json $TASK_ID | jq ".content.dest")"; diff -u <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].before" -r) <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].after" -r) }
+function ara_task_diff() { TASK_ID=$1; echo "dest: $(ara result show --with-content -f json $TASK_ID | jq ".content.invocation.dest")"; diff -u <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].before" -r) <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].after" -r) }
 function ara_task_diff2() { TASK_ID=$1; echo "dest: $(ara result show --with-content -f json $TASK_ID | jq ".content.invocation.module_args.dest")"; diff -u <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].before" -r) <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].after" -r) }
 function ara_task_contentmsg() { ara result show --with-content -f json $1 | jq .content.msg }
 
@@ -198,6 +198,7 @@ fixssh() {
 if [ -n "${PROJECTDIR}" ]; then
   hash -d synpro=${PROJECTDIR}/synpro
   hash -d synnet=${PROJECTDIR}/synnet
+  hash -d ansible=${PROJECTDIR}/ansible
   hash -d proj=${PROJECTDIR}
 
   if [ -e "${PROJECTDIR}/scripts/todo.sh" ] && [ -e "${HOME}/.todo/todo.cfg" ]; then
