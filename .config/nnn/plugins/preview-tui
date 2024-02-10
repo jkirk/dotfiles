@@ -408,6 +408,9 @@ generate_preview() {
     fi
     if [ -f "$NNN_PREVIEWDIR/$3.jpg" ]; then
         image_preview "$1" "$2" "$NNN_PREVIEWDIR/$3.jpg"
+        # cp "$3" "$NNN_PREVIEWDIR/tmp.pdf"
+        ln -sf "$3" "$NNN_PREVIEWDIR/tmp.pdf"
+        [ $(pgrep -c -f "evince $NNN_PREVIEWDIR/tmp.pdf") -eq 0 ] && xdg-open "$NNN_PREVIEWDIR/tmp.pdf"
     else
         fifo_pager print_bin_info "$3"
     fi
