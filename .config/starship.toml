@@ -10,6 +10,16 @@ only_detached = false
 disabled = false
 time_format = "%F %T %Z"
 
+[battery]
+full_symbol = '🔋 '
+charging_symbol = '⚡️ '
+discharging_symbol = '💀 '
+unknown_symbol = '🔌'
+empty_symbol = '🪫'
+
+[[battery.display]]
+threshold = 20
+
 [username]
 # The module will be shown if any of the following conditions are met:
 #     The current user is root
