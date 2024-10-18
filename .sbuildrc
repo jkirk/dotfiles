@@ -1,0 +1,4 @@
+$chroot_mode = 'unshare';
+$chroot = '/srv/sbuild';
+$source_only_changes = 1;
+$apt_update = 1;
