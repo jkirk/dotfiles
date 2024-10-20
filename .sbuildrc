@@ -1,8 +1,10 @@
+#$clean_source = 0;  # see --no-clean-source in .gbp.conf
 $chroot_mode = 'unshare';
 $external_commands = { "build-failed-commands" => [ [ '%SBUILD_SHELL' ] ] };
 $run_autopkgtest = 1;
 $autopkgtest_root_args = '';
 $autopkgtest_opts = [ '--apt-upgrade', '--', 'unshare', '--release', '%r', '--arch', '%a' ];
+#$autopkgtest_opts = [ '--apt-upgrade', '--', 'qemu'];
 #$run_piuparts = 1;
 $piuparts_root_args = ['PATH=/usr/sbin:/usr/bin:/sbin:/bin', 'unshare', '--pid', '--fork', '--mount-proc', '--map-root-user', '--map-auto'];
 $piuparts_opts = ["--basetgz=$HOME/.cache/sbuild/%r-%a.tar.zst", '--fake-essential-packages=systemd-sysv', '--distribution=%r'];
