@@ -210,9 +210,9 @@ if [ -n "${PROJECTDIR}" ]; then
   fi
 fi
 
-export GEM_HOME="$HOME/.local/share/gem"
-export GEM_PATH="$GEM_HOME/bin"
-export PATH=$PATH":$GEM_PATH"
+# export GEM_HOME="$HOME/.local/share/gem"
+# export GEM_PATH="$GEM_HOME/bin"
+# export PATH=$PATH":$GEM_PATH"
 
 # host completion
 if is42 ; then
