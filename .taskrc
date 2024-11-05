@@ -71,7 +71,6 @@ report.rcompleted.sort=end-
 
 context.home=project.has:private or project:linux-desktop
 context.work=project.has:sn or project.has:sp
-context.als=proj:sp.als
 context.waldrapp=proj:sn.waldrapp
 context.notals=proj.not:sp.als
 context.prt=proj:sp.prt
@@ -81,3 +80,5 @@ news.version=2.6.0
 context.pmt.read=proj:sp.pmt
 context.pmt.write=proj:sp.pmt
 context.lw.read=proj:lw or proj:oebm
+context.als.read=proj:sp.als
+context.als.write=proj:sp.als
