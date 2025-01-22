@@ -26,6 +26,10 @@ map <f9> :make!<CR>
 " show Voom rest outline
 map <f8> :Voom rest<CR>
 
+" jump between rst section headers 2 (-) + 3 (~)
+nnoremap [[ :?\(^\(-\+\)$\\|^\([~]\+\)$\)<CR>:nohl<CR>
+nnoremap ]] :/\(^\(-\+\)$\\|^\([~]\+\)$\)<CR>:nohl<CR>
+
 " open file und cursor with xdg-open
 map gfo :!xdg-open <cfile><CR>k
 
