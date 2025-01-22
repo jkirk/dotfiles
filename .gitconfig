@@ -20,11 +20,6 @@
 	slog = log --pretty=one --no-merges --no-decorate
 	stlog = log --pretty=stlog --no-merges --no-decorate
 	cblame = blame -wCCC
-	# mr = !sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -
-	# pr-clean = "!git checkout master ; git for-each-ref refs/heads/pr/* --format=\"%(refname)\" | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
-	# https://gist.github.com/gnarf/5406589#file-gitconfig
-	# pr  = "!f() { git fetch -fu ${2:-$(git remote |grep ^upstream || echo origin)} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
-	# pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
 
 [merge]
 	tool = vimdiff
