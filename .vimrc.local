@@ -14,6 +14,7 @@ set ignorecase
 set smartcase
 set background=dark
 set modeline
+set modelineexpr
 
 " Enable :mks[ession][!] to write a Vim script that restores the current editing session.
 " see: http://www.guckes.net/talks/vim/vim_advanced.txt
