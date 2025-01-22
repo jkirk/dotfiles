@@ -67,16 +67,17 @@ nmap ,p "*p
 nmap ,cbp :set nopaste<cr>i.. code-block:: console<cr><esc>"*p<S-v>']>']j
 nmap ,bp :set nopaste<cr>"*p<S-v>']>']j
 
-imap plc<cr> [...]<cr>PLAY RECAP<cr>
-imap mfg<cr> Mit freundlichen Grüßen,<cr> - Darshaka Pathirana
-imap lgd<cr> Liebe Grüße,<cr> - Darsha
-imap bd<cr> Bussi,<cr> - Darsha
-imap jst<cr> <F11>.. _<C-R>=strftime("%Y%m%d")<cr>_dpat:<cr><cr><C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* **Why?**: <cr>* **What?**: <cr>* **How?**:<esc>kkA<F11>
-imap yst<cr> <F11>.. _<C-R>=strftime("%Y%m%d", system("date -d yesterday +%s"))<cr>:<cr><cr><C-R>=strftime("%F", system("date -d yesterday +%s"))<cr><cr>----------<cr><cr><F11>
-imap dst<cr> <F11>.. _<C-R>=strftime("%Y%m%d")<cr>:<cr><cr><C-R>=strftime("%F")<cr><cr>----------<cr><cr><F11>
-imap wwh<cr> <F11>* **Why?**: <cr>* **What?**: <cr>* **How?**: <esc>kkA<F11>
-imap cbc<cr> .. code-block:: console<cr>
-imap jstm<cr> <C-R>=strftime("%F")<cr> [dpat/mika]<cr>----------------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* Why? <cr>* What? <cr>* How:<esc>kkA
+imap ;plc<cr> [...]<cr>PLAY RECAP<cr>
+imap ;mfg<cr> Mit freundlichen Grüßen,<cr> - Darshaka Pathirana
+imap ;lgd<cr> Liebe Grüße,<cr> - Darsha
+imap ;bd<cr> Bussi,<cr> - Darsha
+imap ;cbc<cr> .. code-block:: console<cr>
+
+imap ;jst<cr> <F11>.. _<C-R>=strftime("%Y%m%d")<cr>_dpat:<cr><cr><C-R>=strftime("%F")<cr> [dpat]<cr>-----------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* **Why?**: <cr>* **What?**: <cr>* **How?**:<esc>kkA<F11>
+imap ;yst<cr> <F11>.. _<C-R>=strftime("%Y%m%d", system("date -d yesterday +%s"))<cr>:<cr><cr><C-R>=strftime("%F", system("date -d yesterday +%s"))<cr><cr>----------<cr><cr><F11>
+imap ;dst<cr> <F11>.. _<C-R>=strftime("%Y%m%d")<cr>:<cr><cr><C-R>=strftime("%F")<cr><cr>----------<cr><cr><F11>
+imap ;wwh<cr> <F11>* **Why?**: <cr>* **What?**: <cr>* **How?**: <esc>kkA<F11>
+imap ;jstm<cr> <C-R>=strftime("%F")<cr> [dpat/mika]<cr>----------------------<cr><cr>TOPIC<cr>~~~~~<cr><cr>* Why? <cr>* What? <cr>* How:<esc>kkA
 
 " remove '=' from valid filename to be able to jump to files in ansible
 " playbooks
