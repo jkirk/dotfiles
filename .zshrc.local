@@ -246,12 +246,17 @@ hosts=(
 )
 zstyle ':completion:*:hosts' hosts $hosts
 
+# Enable starship prompt
 if [ -e "/usr/local/bin/starship" ]; then
   prompt restore
   eval "$(starship init zsh)"
 fi
 
+# Enable zsh autosuggestions
 [[ -r ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -r /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Enable fzf completions and keybindings
 [[ -r /usr/share/doc/fzf/examples/completion.zsh ]] && source /usr/share/doc/fzf/examples/completion.zsh
 [[ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 
