@@ -20,7 +20,7 @@ location:
     # is used, then add local repository paths in the systemd
     # service file to the ReadWritePaths list.
     repositories:
-        - /media/jkirk/DATATMP01/BORGBACKUP01/tranquility.borg
+        - /media/jkirk/BACKUP01/tranquility.borg
 
     # Working directory for the "borg create" command. Tildes are
     # expanded. Useful for backing up using relative paths. See
@@ -139,7 +139,7 @@ location:
 # https://borgbackup.readthedocs.io/en/stable/usage/create.html and
 # https://borgbackup.readthedocs.io/en/stable/usage/general.html for
 # details.
-# storage:
+storage:
     # The standard output of this command is used to unlock the
     # encryption key. Only use on repositories that were
     # initialized with passcommand/repokey/keyfile encryption.
@@ -234,7 +234,7 @@ location:
 
     # Bypass Borg error about a repository that has been moved.
     # Defaults to false.
-    # relocated_repo_access_is_ok: true
+    relocated_repo_access_is_ok: true
 
     # Bypass Borg error about a previously unknown unencrypted
     # repository. Defaults to false.
