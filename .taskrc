@@ -82,3 +82,6 @@ context.pmt.write=proj:sp.pmt
 context.lw.read=proj:lw or proj:oebm
 context.als.read=proj:sp.als
 context.als.write=proj:sp.als
+context.personal.read=proj:misc or proj:blog
+context.linux.read=proj:linux-desktop
+context.linux.write=proj:linux-desktop
