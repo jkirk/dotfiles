@@ -31,14 +31,14 @@ alias status="git status"
 alias gdiff="git diff"
 alias gplog="git log @{1}..HEAD"
 alias git='noglob git' # prevent 'git show HEAD^' causing errors
-function lsshot() { command ls --color=auto -rtlh ~/Pictures/screenshots/*(D.om[1,${1:-10}]) }
-function cpshot() { command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) . }
 alias ls='command ls --color=auto'
 alias sdig='dig +noall +answer'
 alias lstcp='sudo lsof -iTCP -sTCP:LISTEN -n -P'
 # https://twitter.com/dailyzshtip/status/1524343385716371458
 alias beep='play -q -n synth 0.1 sin 880 >& /dev/null'
 alias ___='source ~/.zshrc'
+# a simple, fast and user-friendly alternative to find
+alias f="/usr/bin/fdfind --hidden"
 
 bindkey "^Xa" _expand_alias
 zstyle ':completion:*' completer _expand_alias _complete _ignored
@@ -56,6 +56,18 @@ function ara_tasks_failed() { ara result list --playbook $1 --limit 100 --resolv
 function ara_task_diff() { TASK_ID=$1; echo "dest: $(ara result show --with-content -f json $TASK_ID | jq ".content.invocation.dest")"; diff -u <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].before" -r) <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].after" -r) }
 function ara_task_diff2() { TASK_ID=$1; echo "dest: $(ara result show --with-content -f json $TASK_ID | jq ".content.invocation.module_args.dest")"; diff -u <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].before" -r) <(ara result show $TASK_ID -f json --with-content | jq ".content.diff[].after" -r) }
 function ara_task_contentmsg() { ara result show --with-content -f json $1 | jq .content.msg }
+
+# custom functions
+# list last ten screenshots
+function lsshot() { command ls --color=auto -rtlh ~/Pictures/screenshots/*(D.om[1,${1:-10}]) }
+# copy last screenshot to current directory
+function cpshot() { command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) . }
+# beep and blink if host goes offline
+function beepoffline() { blink1-tool --off; while ping -c 1 -a -q $1 > /dev/null; do sleep 1; done; date; beep; blink1-tool --red }
+# beep and blink if host goes online
+function beeponline() { blink1-tool --off; while ! ping -c 1 -a -q $1 > /dev/null; do sleep 1; done; date; beep; blink1-tool --green }
+# print date after a process has ended
+function processend(){ while pgrep -f "$1" > /dev/null; do sleep 1; done; date }
 
 # Disabled unhappy smiley:
 # zstyle ':prompt:grml:right:setup' use-rprompt false
