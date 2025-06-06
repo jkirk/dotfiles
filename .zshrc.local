@@ -232,23 +232,14 @@ fi
 # export GEM_PATH="$GEM_HOME/bin"
 # export PATH=$PATH":$GEM_PATH"
 
-# host completion
-if is42 ; then
-    [[ -r ~/.ssh/config ]] && _ssh_config_hosts=(${${(s: :)${(ps:\t:)${${(@M)${(f)"$(<$HOME/.ssh/config)"}:#Host *}#Host }}}:#*[*?]*}) || _ssh_config_hosts=()
-    # customized:
-    setopt +o nomatch
-    if ls ~/.ssh/known_hosts_* >/dev/null 2>&1 ; then
-      for file in ~/.ssh/known_hosts_*~*old ; _ssh_hosts=($_ssh_hosts ${${${${(f)"$(<$file)"}:#[\|]*}%%\ *}%%,*})
-    else
-      _ssh_hosts=()
-    fi
-    unsetopt +o nomatch
-    [[ -r /etc/hosts ]] && : ${(A)_etc_hosts:=${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##[:blank:]#[^[:blank:]]#}}} || _etc_hosts=()
-else
-    _ssh_config_hosts=()
-    _ssh_hosts=()
-    _etc_hosts=()
+# customized _ssh_hosts from .zshrc: we also want to read the hosts from ~/.ssh/known_hosts_
+setopt +o nomatch
+if ls ~/.ssh/known_hosts_* >/dev/null 2>&1 ; then
+  for file in ~/.ssh/known_hosts_*~*old ; _ssh_hosts=($_ssh_hosts ${${${${(f)"$(<$file)"}:#[\|]*}%%\ *}%%,*})
 fi
+unsetopt +o nomatch
+
+# set hosts again with all "hosts" variables from .zshrc
 hosts=(
     $(hostname)
     "$_ssh_config_hosts[@]"
