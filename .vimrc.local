@@ -64,6 +64,13 @@ nmap ,cp :let @"=expand("%:p:h")<CR>
 nmap ,cfp :let @"=expand("%:p")<CR>
 " INFO: to paste the unnamed buffer to vim command line hit Ctrl-R "
 " See: https://stackoverflow.com/a/3997110
+"
+" Shortcut to include latest screenshot
+" :execute 'silent !command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) img; git add $(ls img/*(D.om[1,${1:-1}]))' | read ! echo -n ".. image:: $(ls img/*(D.om[1,${1:-1}]))"<cr>
+nmap ,is :!command cp ~/Pictures/screenshots/*(D.om[1,${1:-1}]) img; git add $(ls img/*(D.om[1,${1:-1}]))<CR>:read !echo -n ".. image:: $(ls img/*(D.om[1,${1:-1}]))"<CR>
+
+" WIP: Shortcut to include OCR text of a screen
+" nmap ,io :execute 'silent !command OCRIMG="$(mktemp).png"; gnome-screenshot -a -f "${OCRIMG}"; tesseract --dpi 150 "${OCRIMG}" - | xclip ;shred -u "${OCRIMG}"'<cr>
 
 " paste PRIMARY x-clipboard buffer
 nmap ,p "*p
