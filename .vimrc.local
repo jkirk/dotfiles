@@ -39,7 +39,7 @@ packadd! vimplate
 " no idea why
 " To make the map <f9> run "make html" automatically for rst file, we need to
 " set makeprt
-autocmd FileType rst set shiftwidth=2 makeprg=make\ html
+autocmd FileType rst set shiftwidth=2 makeprg=FORCE_COLOR=1\ make\ html
 
 " Highlight the screen column of the cursor
 " see: https://t.co/YE94dFuTLE
