@@ -9,6 +9,7 @@ location:
         - /etc
         - /var/log
         - /home/jkirk
+        - /home/jkirk/.config/Signal
         - /home/jkirk/projects
         - /home/jkirk/Documents/Archive
 
