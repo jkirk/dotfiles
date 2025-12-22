@@ -160,18 +160,6 @@ function glog () {
   noglob git log -p -40 $1 | vim - -R -c 'set foldmethod=syntax'
 }
 
-function pyexcel-view() {
-    if type "pyexcel" > /dev/null; then
-        pyexcel view "$1"
-    fi
-}
-
-function pyexcel-diff() {
-    if type "pyexcel" > /dev/null; then
-        pyexcel diff "$2" "$5"
-    fi
-}
-
 function dont_sleep() {
 	if [[ $1 == "on" ]]; then
 		gsettings set org.gnome.desktop.session idle-delay 0
