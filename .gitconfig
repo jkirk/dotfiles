@@ -20,6 +20,7 @@
 	slog = log --pretty=one --no-merges --no-decorate
 	stlog = log --pretty=stlog --no-merges --no-decorate
 	cblame = blame -wCCC
+	diffc = diff --cached
 
 [merge]
 	tool = vimdiff
