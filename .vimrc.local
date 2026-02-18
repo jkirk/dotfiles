@@ -160,5 +160,9 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " shorthand for https://github.com/pearofducks/ansible-vim
 Plug 'pearofducks/ansible-vim'
 
+" vim-plug
+" https://github.com/iberianpig/tig-explorer.vim
+Plug 'iberianpig/tig-explorer.vim'
+
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
