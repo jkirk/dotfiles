@@ -38,7 +38,7 @@ alias lstcp='sudo lsof -iTCP -sTCP:LISTEN -n -P'
 alias beep='play -q -n synth 0.1 sin 880 >& /dev/null'
 alias ___='source ~/.zshrc'
 # a simple, fast and user-friendly alternative to find
-alias f="/usr/bin/fdfind --hidden"
+alias f="/usr/bin/fdfind --hidden -I"
 
 bindkey "^Xa" _expand_alias
 zstyle ':completion:*' completer _expand_alias _complete _ignored
