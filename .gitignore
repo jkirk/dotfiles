@@ -2,6 +2,7 @@
 .vim/Session.vim
 .vim/.netrwhist
 .vim/plugged/ansible-vim
+.vim/plugged/tig-explorer.vim
 .ssh/
 .config/nnn/.lastd
 **/__pycache__/**
