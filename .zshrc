@@ -976,14 +976,17 @@ abk=(
     'G'    '|& grep '${grep_options:+"${grep_options[*]}"}
     'H'    '| head'
     'Hl'   ' --help |& less -r'    #d (Display help in pager)
+    'J'    '| jq'
+    'K'    '| keep'
     'L'    '| less'
     'LL'   '|& less -r'
     'M'    '| most'
     'N'    '&>/dev/null'           #d (No Output)
-    'R'    '| tr A-z N-za-m'       #d (ROT13)
+    'R'    '| tr A-Za-z N-ZA-Mn-za-m' #d (ROT13)
     'SL'   '| sort | less'
     'S'    '| sort -u'
     'T'    '| tail'
+    'TS'   '| ts "%F %H:%M:%.S"'
     'V'    '|& vim -'
 #A# end
     'co'   './configure && make && sudo make install'
@@ -2469,12 +2472,6 @@ if [[ -x /sbin/kexec ]] && [[ -r /proc/cmdline ]] ; then
     alias "$(uname -r)-reboot"="kexec -l --initrd=/boot/initrd.img-"$(uname -r)" --command-line=\"$(cat /proc/cmdline)\" /boot/vmlinuz-"$(uname -r)""
 fi
 
-# especially for roadwarriors using GNU screen and ssh:
-if ! check_com asc &>/dev/null ; then
-  function asc () { autossh -t "$@" 'screen -RdU' }
-  compdef asc=ssh
-fi
-
 #f1# Hints for the use of zsh on grml
 function zsh-help () {
     print "$bg[white]$fg[black]
@@ -2579,8 +2576,8 @@ if [[ -r /etc/debian_version ]] ; then
           #a3# Execute \kbd{dpkg-buildpackage}
           alias dbp='dpkg-buildpackage'
         fi
-        #a3# Execute \kbd{grep-excuses}
         if check_com -c grep-excuses ; then
+          #a3# Execute \kbd{grep-excuses}
           alias ge='grep-excuses'
         fi
         if check_com -c apt-file ; then
@@ -2620,8 +2617,8 @@ fi
 
 # grmlstuff
 function grmlstuff () {
-    #a1# Output version of running grml
     if [ -r /etc/grml_version ]; then
+      #a1# Output version of running grml
       alias grml-version='cat /etc/grml_version'
     fi
 
@@ -3445,6 +3442,16 @@ function _simple_extract () {
 }
 compdef _simple_extract simple-extract
 [[ -n "$GRML_NO_SMALL_ALIASES" ]] || alias se=simple-extract
+
+#f5# Show "public" IP address of current system on stdout. Requires network access and curl(1).
+function myip () {
+    if [[ $# == 0 ]] || [[ $# == 1 && $1 == "-4" ]] || [[ $# == 1 && $1 == "-6" ]] ; then
+        curl "$@" https://myip.grml.org -H 'User-Agent: grml-etc-core-zshrc'
+    else
+        printf 'usage: myip [-4|-6]\n' >&2
+        return 1
+    fi
+}
 
 #f5# Change the xterm title from within GNU-screen
 function xtrename () {
