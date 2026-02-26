@@ -151,6 +151,10 @@ let g:BASH_EMAIL        = 'dpat@syn-net.org'
 let g:BASH_MapLeader 	= '<'
 let g:BASH_FormatDate 	= '%F'
 
+"# ansible-vim settings ###################
+"# enable completion for the ansible builtin modules
+let g:ansible_builtin_modules_highlight = 'Constant'
+
 " vim-plug needs to be enabled
 " See: https://github.com/junegunn/vim-plug/wiki/tutorial
 " Plugins will be downloaded under the specified directory.
