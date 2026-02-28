@@ -156,11 +156,33 @@ let g:BASH_EMAIL        = 'dpat@syn-net.org'
 let g:BASH_MapLeader 	= '<'
 let g:BASH_FormatDate 	= '%F'
 
-"# ansible-vim settings ###################
+"# vim-plug/ansible-vim settings ###################
 "# enable completion for the ansible builtin modules
 let g:ansible_builtin_modules_highlight = 'Constant'
 
-" vim-plug needs to be enabled
+"# vim-plug/tig-explorer settings ##################
+" open tig with current file
+nnoremap <Leader>T :TigOpenCurrentFile<CR>
+
+" open tig with Project root path
+nnoremap <Leader>t :TigOpenProjectRootDir<CR>
+
+" open tig grep
+nnoremap <Leader>g :TigGrep<CR>
+
+" resume from last grep
+nnoremap <Leader>r :TigGrepResume<CR>
+
+" open tig grep with the selected word
+vnoremap <Leader>g y:TigGrep<Space><C-R>"<CR>
+
+" open tig grep with the word under the cursor
+nnoremap <Leader>cg :<C-u>:TigGrep<Space><C-R><C-W><CR>
+
+" open tig blame with current file
+nnoremap <Leader>b :TigBlame<CR>
+
+"# Enable vim-plug #################################
 " See: https://github.com/junegunn/vim-plug/wiki/tutorial
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
@@ -169,7 +191,6 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " shorthand for https://github.com/pearofducks/ansible-vim
 Plug 'pearofducks/ansible-vim'
 
-" vim-plug
 " https://github.com/iberianpig/tig-explorer.vim
 Plug 'iberianpig/tig-explorer.vim'
 
