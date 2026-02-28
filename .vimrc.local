@@ -57,11 +57,11 @@ cmap w!! w !sudo tee > /dev/null %
 " copy filename to clipboard
 " see: http://vim.wikia.com/wiki/VimTip600
 " copy filename to unnamed buffer
-nmap ,cf :let @"=expand("%")<CR>
+nmap ,cf :let @*=expand("%")<CR>
 " copy path of filename to unnamed buffer
-nmap ,cp :let @"=expand("%:p:h")<CR>
+nmap ,cp :let @*=expand("%:p:h")<CR>
 " copy full filepath of filename to unnamed buffer
-nmap ,cfp :let @"=expand("%:p")<CR>
+nmap ,cfp :let @*=expand("%:p")<CR>
 " INFO: to paste the unnamed buffer to vim command line hit Ctrl-R "
 " See: https://stackoverflow.com/a/3997110
 "
@@ -77,6 +77,11 @@ nmap ,p "*p
 " paste PRIMARY x-clipboard buffer as indented code-block (rst syntax)
 nmap ,cbp :set nopaste<cr>i.. code-block:: console<cr><esc>"*p<S-v>']>']j
 nmap ,bp :set nopaste<cr>"*p<S-v>']>']j
+
+" shortcut to replace sphinx / rst label to cross-reference
+nmap ,rf df_dwAref:`<C-R>"`<ESC>
+" shortcut to search for the sphinx / rst reference under the cursor
+nmap ,rs /<C-R><C-W><CR>
 
 imap ;plc<cr> [...]<cr>PLAY RECAP<cr>
 imap ;mfg<cr> Mit freundlichen Grüßen,<cr> - Darshaka Pathirana
