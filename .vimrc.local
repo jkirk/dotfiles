@@ -138,6 +138,17 @@ set listchars=precedes:«,extends:»,tab:»·,trail:■
 au CmdLineEnter : let s:incs = &incsearch | set noincsearch
 au CmdLineLeave : let &incsearch = s:incs
 
+
+"" Presenterm comment command helper (needs fzf)
+" see:
+" https://mfontanini.github.io/presenterm/features/commands.html?highlight=jump_to_middle#editor-integration-example-vim
+if executable('presenterm') && executable('fzf')
+  inoremap <expr> <c-k> fzf#vim#complete(fzf#wrap({
+        \ 'source':  'presenterm --list-comment-commands',
+        \ 'options': '--header "Comment Command Selection" --no-hscroll',
+        \ 'reducer': { lines -> lines[0] } }))
+endif
+
 "# latex-suite settings ####################
 set grepprg=grep\ -nH\ $*
 filetype indent on
@@ -185,6 +196,9 @@ nnoremap <Leader>b :TigBlame<CR>
 "# Enable vim-plug #################################
 " See: https://github.com/junegunn/vim-plug/wiki/tutorial
 " Plugins will be downloaded under the specified directory.
+"
+" To install plugins call :PlugInstall
+" To update plugin call :PlugUpdate and press D (or :PlugDiff) to see the diff
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 " Declare the list of plugins.
@@ -193,6 +207,11 @@ Plug 'pearofducks/ansible-vim'
 
 " https://github.com/iberianpig/tig-explorer.vim
 Plug 'iberianpig/tig-explorer.vim'
+
+" https://github.com/junegunn/fzf.vim?tab=readme-ov-file#installation
+" https://github.com/junegunn/fzf/blob/master/README-VIM.md
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
