@@ -69,6 +69,15 @@ function beeponline() { blink1-tool --off; while ! ping -c 1 -a -q $1 > /dev/nul
 # print date after a process has ended
 function processend(){ while pgrep -f "$1" > /dev/null; do sleep 1; done; date }
 
+# locatedb functions
+#
+# update a specific locatedb
+function udb() { [ -n "${1}" ] && updatedb --localpaths=/media/jkirk/${1} --output=/home/jkirk/.local/share/locatedb/${1}.locatedb }
+# search in a specific locatedb
+function ldb() { [ -n "${2}" ] && locate -i -d /home/jkirk/.local/share/locatedb/${1}.locatedb "${2}" }
+# search in all locatedbs
+function all-ldb() { [ -n "${1}" ] && for db in /home/jkirk/.local/share/locatedb/*; ldb $(basename -s .locatedb $db) "$1" }
+
 # Disabled unhappy smiley:
 # zstyle ':prompt:grml:right:setup' use-rprompt false
 
