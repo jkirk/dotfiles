@@ -1,0 +1,9 @@
+# .caffrc -- vim:ft=perl:
+# This file is in perl(1) format - see caff(1) for details.
+
+$CONFIG{'owner'} = 'Darshaka Pathirana';
+$CONFIG{'email'} = 'dpat@syn-net.org';
+$CONFIG{'keyid'} = [ qw{9BB6983DDD81AFEB} ];
+$CONFIG{'bcc'} = 'dpat@syn-net.org';
+# if msmtp-mta is not installed, the following is needed:
+# $ENV{'PERL_MAILERS'} = 'sendmail:/usr/bin/msmtp';
