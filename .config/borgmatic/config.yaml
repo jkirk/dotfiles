@@ -28,7 +28,8 @@ source_directories:
 # ReadWritePaths list. Prior to borgmatic 1.7.10, repositories was a
 # list of plain path strings.
 repositories:
-    - /media/jkirk/BACKUP01/tranquility.borg
+    - path: /media/jkirk/BACKUP01/tranquility.borg
+      label: BACKUP01
 
 # Working directory to use when running actions, useful for backing up
 # using relative source directory paths. Does not currently apply to
